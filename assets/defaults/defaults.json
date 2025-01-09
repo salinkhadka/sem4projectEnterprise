@@ -1,0 +1,159 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "name": "Income",
+      "nepaliName": "आम्दानी",
+      "iconName": "hornbill",
+      "categoryHeadingId": 1
+    },
+    {
+      "id": 2,
+      "name": "Loan",
+      "nepaliName": "ऋण",
+      "iconName": "hornbill",
+      "categoryHeadingId": 2
+    },
+    {
+      "id": 3,
+      "name": "Equity",
+      "nepaliName": "शेयर पुँजी",
+      "iconName": "hornbill",
+      "categoryHeadingId": 3
+    },
+    {
+      "id": 4,
+      "name": "Labour Cost",
+      "nepaliName": "ज्याला खर्च",
+      "iconName": "hornbill",
+      "categoryHeadingId": 4
+    },
+    {
+      "id": 5,
+      "name": "Input Cost",
+      "nepaliName": "निवेश खर्चहरु",
+      "iconName": "hornbill",
+      "categoryHeadingId": 4
+    },
+    {
+      "id": 6,
+      "name": "Interest on loan",
+      "nepaliName": "ऋणमा ब्याज",
+      "iconName": "hornbill",
+      "categoryHeadingId": 5
+    },
+    {
+      "id": 7,
+      "name": "Loan Repayment",
+      "nepaliName": "व्याज भुक्तानी",
+      "iconName": "hornbill",
+      "categoryHeadingId": 5
+    },
+    {
+      "id": 8,
+      "name": "Dividend Payment",
+      "nepaliName": "लाभांश भुक्तानी",
+      "iconName": "hornbill",
+      "categoryHeadingId": 5
+    },
+    {
+      "id": 9,
+      "name": "Long-term investment",
+      "nepaliName": "दिर्घकालीन लगानी",
+      "iconName": "hornbill",
+      "categoryHeadingId": 6
+    },
+    {
+      "id": 10,
+      "name": "Machineries",
+      "nepaliName": "मेसनरी औजार",
+      "iconName": "hornbill",
+      "categoryHeadingId": 6
+    },
+    {
+      "id": 11,
+      "name": "Properties",
+      "nepaliName": "सम्पत्ति ",
+      "iconName": "hornbill",
+      "categoryHeadingId": 6
+    }
+  ],
+  "accountType": [
+    {
+      "id": 1,
+      "name": "Bank",
+      "nepaliName": "बैंक",
+      "iconName": "university"
+    },
+    {
+      "id": 2,
+      "name": "Cash",
+      "nepaliName": "नगद",
+      "iconName": "hornbill"
+    },
+    {
+      "id": 3,
+      "name": "Person",
+      "nepaliName": "व्यक्ति",
+      "iconName": "user-tie"
+    },
+    {
+      "id": 4,
+      "name": "Other",
+      "nepaliName": "अन्य",
+      "iconName": "wallet"
+    }
+  ],
+  "account": [
+    {
+      "id": 1,
+      "name": "Cash",
+      "nepaliName": "नगद",
+      "accountTypeId": 2
+    }
+  ],
+  "categoryHeadings": [
+    {
+      "id": 1,
+      "name": "Income",
+      "nepaliName": "आम्दानी",
+      "isIncome": true,
+      "iconName": "income.svg"
+    },
+    {
+      "id": 2,
+      "name": "Loan",
+      "nepaliName": "ऋण",
+      "isIncome": true,
+      "iconName": "loan.svg"
+    },
+    {
+      "id": 3,
+      "name": "Equity",
+      "nepaliName": "शेयर पुँजी",
+      "isIncome": true,
+      "iconName": "equity.svg"
+    },
+    {
+      "id": 4,
+      "name": "Operating Activities",
+      "isIncome": false,
+      "nepaliName": "संचालन गतिविधीहरु",
+      "iconName": "operating.svg"
+    },
+    {
+      "id": 5,
+      "name": "Financing activities",
+      "isIncome": false,
+      "nepaliName": "वित्तिय गतिविधीहरु ",
+      "iconName": "financing.svg"
+    },
+    {
+      "id": 6,
+      "name": "Investing activities",
+      "isIncome": false,
+      "nepaliName": "लगानी गतिविधीहरु",
+      "iconName": "investing.svg"
+    }
+  ]
+}
