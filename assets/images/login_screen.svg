@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="375" height="812" viewBox="0 0 375 812">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.834" y1="0.565" x2="-0.527" y2="0.528" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#6320d1" stop-opacity="0.729"/>
+      <stop offset="0.031" stop-color="#5f25d3"/>
+      <stop offset="1" stop-color="#00b1fa"/>
+    </linearGradient>
+    <clipPath id="clip-splash_screen_3">
+      <rect width="375" height="812"/>
+    </clipPath>
+  </defs>
+  <g id="splash_screen_3" data-name="splash screen – 3" clip-path="url(#clip-splash_screen_3)">
+    <rect width="375" height="812" fill="#6320d1"/>
+    <path id="blob" d="M742.4-17.383c83.643,26.13,162.438,77.3,213.352,146.982s76.37,156.78,56.974,234.082c-18.183,78.39-78.794,145.893-127.284,218.839-49.7,72.946-87.28,151.336-152.74,200.33-65.46,47.905-160.014,67.5-255.779,70.769-95.766,4.355-193.956-8.71-276.387-48.994s-149.1-107.786-190.319-184A446.452,446.452,0,0,1-41.9,376.745C-35.844,294-7.963,214.521,44.163,155.729,97.5,95.847,173.871,56.652,250.241,27.256c76.37-28.308,152.74-47.905,235.172-57.7C569.056-41.335,657.549-42.424,742.4-17.383Z" transform="matrix(-0.105, 0.995, -0.995, -0.105, 664.018, 21.964)" fill="url(#linear-gradient)"/>
+  </g>
+</svg>
