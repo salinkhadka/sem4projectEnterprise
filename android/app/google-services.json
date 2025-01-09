@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "930052247054",
+    "project_id": "byaparlekha",
+    "storage_bucket": "byaparlekha.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:930052247054:android:82c84f2feca0f3c08cf65f",
+        "android_client_info": {
+          "package_name": "np.com.softwarica.byaparlekha"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "930052247054-l1012mf38hibgbi9t1pmglcts31d1s4u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "np.com.softwarica.byaparlekha",
+            "certificate_hash": "c5ab9bbc0883bd4cc4f3586237b1649b65bbad39"
+          }
+        },
+        {
+          "client_id": "930052247054-llt071580jiralc2ffvvrk2b5vrfo7gl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "np.com.softwarica.byaparlekha",
+            "certificate_hash": "12cd0641da0f913ab1c3c07c9b3090b12ba3340d"
+          }
+        },
+        {
+          "client_id": "930052247054-c7oc462v89a6jp8b02fdai6pnmisppft.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_4dNu3wgOnDPYE4ZEZVacWdvYtO7Exvg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "930052247054-c7oc462v89a6jp8b02fdai6pnmisppft.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
