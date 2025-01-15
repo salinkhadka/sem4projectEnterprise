@@ -69,3 +69,65 @@ class _MyDrawerState extends State<MyDrawer> {
                   Routes.category,
                 ),
               ),
+              ValueListenableBuilder(
+                            valueListenable: expanded,
+                            builder: (context, value, child) => ExpansionPanelList(
+                              expansionCallback: (panelIndex, isExpanded) {
+                                expanded.value = isExpanded;
+                              },
+                              elevation: 0,
+                              expandedHeaderPadding: EdgeInsets.zero,
+                              children: [
+                                ExpansionPanel(
+                                    highlightColor: Colors.white,
+                                    backgroundColor: Colors.white,
+                                    isExpanded: expanded.value,
+                                    canTapOnHeader: true,
+                                    headerBuilder: (context, isExpanded) => Row(
+                                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            SvgPicture.string(
+                                              castOutflowIcon,
+                                              allowDrawingOutsideViewBox: true,
+                                              height: 20,
+                                              fit: BoxFit.fill,
+                                              width: 20,
+                                              color: Configuration().iconColor,
+                                            ),
+                                            SizedBox(
+                                              width: 15,
+                                            ),
+                                            Expanded(
+                                              child: AdaptiveText(
+                                                TextModel("Cash Flow Projection"),
+                                                style: _style.copyWith(fontWeight: FontWeight.w500),
+                                                textAlign: TextAlign.left,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                    body: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                      child: Column(
+                                        children: [
+                                          drawerWidget(
+                                            iconString: castOutflowIcon,
+                                            title: 'Cash Inflow',
+                                            onTap: () => Navigator.pushNamed(context, Routes.budget, arguments: true),
+                                          ),
+                                          drawerWidget(
+                                            iconString: castOutflowIcon,
+                                            title: 'Cash Outflow',
+                                            onTap: () => Navigator.pushNamed(context, Routes.budget, arguments: false),
+                                          ),
+                                          drawerWidget(
+                                            iconString: castOutflowIcon,
+                                            title: 'Projection Vs Actual',
+                                            onTap: () => Navigator.pushNamed(context, Routes.projectAndActual, arguments: false),
+                                          ),
+                                        ],
+                                      ),
+                                    )),
+                              ],
+                            ),
+                          ),
