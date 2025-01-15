@@ -131,3 +131,109 @@ class _MyDrawerState extends State<MyDrawer> {
                               ],
                             ),
                           ),
+                          // drawerWidget(
+                                      //   iconString: dailyLogIcon,
+                                      //   title: 'Daily Log',
+                                      //   onTap: () => Navigator.pushNamed(
+                                      //     context,
+                                      //     Routes.dailyLog,
+                                      //   ),
+                                      // ),
+                                      drawerWidget(
+                                          icon: Icons.insert_chart_outlined_outlined,
+                                          title: 'Report',
+                                          onTap: () {
+                                            Navigator.pushNamed(
+                                              context,
+                                              Routes.report,
+                                            );
+                                          }),
+                                      drawerWidget(
+                                          icon: Icons.password,
+                                          title: 'Change Password',
+                                          onTap: () {
+                                            Navigator.pushNamed(context, Routes.changePasswordPage);
+                                          }),
+                                      drawerWidget(
+                                        icon: Icons.backup,
+                                        title: 'Backup',
+                                        onTap: () => Navigator.pushNamed(
+                                          context,
+                                          Routes.backup,
+                                        ),
+                                      ),
+                                      drawerWidget(
+                                        title: "Logout",
+                                        icon: Icons.logout,
+                                        onTap: () {
+                                          showDeleteDialog(context, title: "Confirm Logout", deleteButtonText: "Logout", description: "Do you want to Logout? All your data which are not backed up will be lost",
+                                              onDeletePress: () async {
+                                            await FirebaseAuth.instance.signOut();
+                                            SharedPreferenceService().clearPreference();
+
+                                            await AppDatabase().myDatabase.closeAndDeleteDatabase();
+                                            Navigator.pushNamedAndRemoveUntil(context, Routes.authenticationPage, (route) => false);
+                                          });
+                                        },
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }
+                            // drawerWidget(
+                                        //   iconString: dailyLogIcon,
+                                        //   title: 'Daily Log',
+                                        //   onTap: () => Navigator.pushNamed(
+                                        //     context,
+                                        //     Routes.dailyLog,
+                                        //   ),
+                                        // ),
+                                        drawerWidget(
+                                            icon: Icons.insert_chart_outlined_outlined,
+                                            title: 'Report',
+                                            onTap: () {
+                                              Navigator.pushNamed(
+                                                context,
+                                                Routes.report,
+                                              );
+                                            }),
+                                        drawerWidget(
+                                            icon: Icons.password,
+                                            title: 'Change Password',
+                                            onTap: () {
+                                              Navigator.pushNamed(context, Routes.changePasswordPage);
+                                            }),
+                                        drawerWidget(
+                                          icon: Icons.backup,
+                                          title: 'Backup',
+                                          onTap: () => Navigator.pushNamed(
+                                            context,
+                                            Routes.backup,
+                                          ),
+                                        ),
+                                        drawerWidget(
+                                          title: "Logout",
+                                          icon: Icons.logout,
+                                          onTap: () {
+                                            showDeleteDialog(context, title: "Confirm Logout", deleteButtonText: "Logout", description: "Do you want to Logout? All your data which are not backed up will be lost",
+                                                onDeletePress: () async {
+                                              await FirebaseAuth.instance.signOut();
+                                              SharedPreferenceService().clearPreference();
+
+                                              await AppDatabase().myDatabase.closeAndDeleteDatabase();
+                                              Navigator.pushNamedAndRemoveUntil(context, Routes.authenticationPage, (route) => false);
+                                            });
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }
