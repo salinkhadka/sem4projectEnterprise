@@ -166,64 +166,78 @@ Future<dynamic> detailDialog(BuildContext context, {Function(dynamic)? onDialogC
   });
 }
 
-Future<dynamic> detailDialog(BuildContext context, {Function(dynamic)? onDialogClosed, Function? onDelete, Function? onUpdate, String? title, bool? showButton, Widget? detailWidget}) async {
+Future<dynamic> showFormDialog(BuildContext context,
+    {Widget? titleWidget, Widget? bodyWidget, bool? showTitleWidget, String? title, IconData? titleIcon, String? buttonText, Function? onButtonPressed, Function? onButton2Pressed}) async {
   return await showDialog(
     context: context,
+    barrierDismissible: true,
     builder: (context) {
-      return AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
-        backgroundColor: Colors.white,
-        contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 25),
-        title: AdaptiveText(
-          TextModel(title ?? 'Detail'),
-          style: TextStyle(
-            fontSize: 20,
-            color: Configuration().deleteColor,
-            fontWeight: FontWeight.w700,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 0.0, left: 15.0, right: 15.0, bottom: 10.0),
-              child: detailWidget ??
+      return Dialog(
+        backgroundColor: Colors.transparent,
+        child: Container(
+          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(18.0))),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 35, horizontal: 23),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if ((showTitleWidget ?? false) && titleWidget != null)
+                    titleWidget
+                  else
+                    Center(
+                      child: AdaptiveText(
+                        TextModel(title ?? ''),
+                        style: TextStyle(color: Configuration().deleteColor, fontSize: 19.0, fontWeight: FontWeight.w500),
+                      ),
+                    ),
                   SizedBox(
-                    height: 1,
+                    height: 25,
                   ),
-            ),
-            SizedBox(height: 20.0),
-            if (showButton ?? true)
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  InkWell(
-                    onTap: () {
-                      FocusScope.of(context).requestFocus(new FocusNode());
-                      if (onDelete != null) onDelete();
-                    },
-                    child: chipDecoratedContainer('Delete'),
+                  if (bodyWidget != null) bodyWidget,
+                  SizedBox(height: 50.0),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextButton(
+                          style: ButtonStyle(textStyle: MaterialStateProperty.resolveWith((states) => TextStyle(color: Colors.white))),
+                          onPressed: () async {
+                            FocusScope.of(context).requestFocus(new FocusNode());
+                            if (onButtonPressed != null) onButtonPressed();
+                          },
+                          child: AdaptiveText(
+                            TextModel(buttonText ?? 'Add'),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 17.0, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      if (onButton2Pressed != null) SizedBox(width: 30),
+                      if (onButton2Pressed != null)
+                        Expanded(
+                          child: TextButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.resolveWith((states) => Configuration().cancelColor),
+                                textStyle: MaterialStateProperty.resolveWith((states) => TextStyle(color: Colors.white))),
+                            onPressed: () async {
+                              onButton2Pressed();
+                            },
+                            child: AdaptiveText(
+                              TextModel('Cancel'),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 17.0, color: Colors.white),
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
-                  InkWell(
-                    onTap: () async {
-                      FocusScope.of(context).requestFocus(new FocusNode());
-                      if (onUpdate != null) {
-                        onUpdate();
-                      }
-                    },
-                    child: chipDecoratedContainer('Update', chipColor: Color(0xffb380f6)),
-                  ),
+                  SizedBox(height: 8.0),
                 ],
               ),
-            SizedBox(height: 8.0),
-          ],
+            ),
+          ),
         ),
       );
     },
-  ).then((value) {
-    if (onDialogClosed != null) onDialogClosed(value);
-  });
+  );
 }
