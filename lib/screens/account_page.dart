@@ -280,3 +280,33 @@ class _AccountPageState extends State<AccountPage> {
           }, description: 'Are you sure you want to delete this account?');
         }
       }
+
+      Widget getBankAccountTypeIcon(int? accountTypeId, {bool isForm = false}) {
+        switch (accountTypeId) {
+          case 3:
+            return Icon(
+              VectorIcons.fromName('user-tie', provider: IconProvider.FontAwesome5),
+              color: Configuration().accountIconColor,
+              size: isForm ? 18 : 25,
+            );
+          case 1:
+            return Icon(
+              VectorIcons.fromName('university', provider: IconProvider.FontAwesome5),
+              color: Configuration().accountIconColor,
+              size: isForm ? 18 : 25,
+            );
+          case 2:
+            return SvgPicture.string(
+              cashIcon,
+              fit: BoxFit.fill,
+              height: isForm ? 14 : null,
+              allowDrawingOutsideViewBox: false,
+            );
+          default:
+            return Icon(
+              VectorIcons.fromName('wallet', provider: IconProvider.FontAwesome5),
+              color: Configuration().accountIconColor,
+              size: isForm ? 18 : 25,
+            );
+        }
+      }
