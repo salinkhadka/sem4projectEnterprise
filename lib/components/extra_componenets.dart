@@ -305,3 +305,34 @@ Future<dynamic> showErrorDialog(BuildContext context, String errorMessage, {bool
       },
     );
 }
+
+Widget formSeperator() => SizedBox(
+      height: 10,
+    );
+
+_overlaySupprt(String message, ToastificationType type) {
+  toastification.show(
+      title: Text(
+        message,
+        maxLines: 3,
+      ),
+      style: ToastificationStyle.fillColored,
+      showIcon: false,
+      type: type,
+      autoCloseDuration: const Duration(seconds: 3),
+      closeOnClick: true,
+      alignment: Alignment.bottomCenter);
+}
+
+showErrorToast(String message) {
+  _overlaySupprt(message, ToastificationType.error);
+}
+
+showSuccessToast(String message) {
+  _overlaySupprt(message, ToastificationType.success);
+}
+
+IconData kDefaultIconData = VectorIcons.fromName(
+  'hornbill',
+  provider: IconProvider.FontAwesome5,
+);
