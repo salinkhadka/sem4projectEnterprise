@@ -321,3 +321,31 @@ class AccountDialog extends StatefulWidget {
   @override
   _AccountDialogState createState() => _AccountDialogState();
 }
+
+class _AccountDialogState extends State<AccountDialog> {
+  late final AccountDataModel? accountDataModel;
+  int? _accountType = 1;
+  var _accountNameController = TextEditingController();
+  var _openingBalanceController = TextEditingController();
+  var _formKey = GlobalKey<FormState>();
+  List<AccountTypeData> accounts = [];
+  Lang? language;
+  int popId = 0;
+  DateTime? openingBalanceDate;
+  @override
+  void initState() {
+    accountDataModel = widget.accountDataModel;
+    if (accountDataModel != null) {
+      _accountType = accountDataModel!.accountTypeId;
+
+      _accountNameController.text = accountDataModel!.name;
+      _openingBalanceController.text = accountDataModel!.balance.toString();
+      openingBalanceDate = accountDataModel!.openingBalanceDate;
+    }
+    AppDatabase().myDatabase.accountTypeDao.getAll().then((value) {
+      accounts = value;
+      accounts.removeWhere((e) => e.id == 2);
+      setState(() {});
+    });
+    super.initState();
+  }
