@@ -346,3 +346,11 @@ void showSnackBar(BuildContext context, String message, {bool isSuccess = false}
     ),
   ));
 }
+
+Widget centerHintText({String? text}) {
+  return Center(
+      child: AdaptiveText(
+    TextModel(text ?? 'Data Not Found'),
+    style: TextStyle(fontSize: 18, color: Colors.grey),
+  ));
+}
