@@ -354,3 +354,16 @@ Widget centerHintText({String? text}) {
     style: TextStyle(fontSize: 18, color: Colors.grey),
   ));
 }
+
+String nepaliNumberFormatter(num value, {int? decimalDigits, Language? language, bool showSign = false}) {
+  final formattedNumber = NepaliNumberFormat(
+          // language: language == 'en' ? Language.english : Language.nepali,
+          includeDecimalIfZero: decimalDigits != null,
+          decimalDigits: decimalDigits,
+          language: language)
+      .format((value.abs()).toString());
+  if (showSign && value < 0) {
+    return ('(' + formattedNumber + ')');
+  } else
+    return formattedNumber;
+}
