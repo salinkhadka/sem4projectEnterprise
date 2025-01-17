@@ -178,3 +178,41 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     );
   }
 
+Future<void> restoreUserBackup(String url) async {
+    try {
+      final inputFileStream = InputFileStream(url);
+      Archive archive = ZipDecoder().decodeBuffer(inputFileStream);
+      ArchiveFile byaparlekhaDb = archive.files.singleWhere((element) => element.name == databaseName);
+      byaparlekhaDb.decompress();
+      final dbContent = byaparlekhaDb.content;
+      await AppDatabase().myDatabase.deleteAndUpdateDatabase(dbContent);
+      List<ArchiveFile> inAppImageDir = archive.files
+          .where(
+            (element) => element.name.contains('app_files'),
+          )
+          .toList();
+      final imageDirectory = await Configuration().getImageStorageDirectory();
+      final rootImageDirectory = await Configuration().getRootImageStorageDirectory();
+      if (await imageDirectory.exists())
+        try {
+          await imageDirectory.delete(recursive: true);
+        } catch (e) {
+          debugPrint(e.toString());
+        }
+      if (inAppImageDir.isEmpty) return;
+      await imageDirectory.create(recursive: true);
+      for (ArchiveFile element in inAppImageDir) {
+        element.decompress();
+        if (element.isFile)
+          await File(join(rootImageDirectory.path, element.name)).writeAsBytes(element.content);
+        else
+          try {
+            await Directory(join(rootImageDirectory.path, element.name)).create(recursive: true);
+          } catch (e) {}
+      }
+    } on PlatformException catch (e) {
+      throw (e.message ?? '');
+    } catch (e) {
+      rethrow;
+    }
+  }
