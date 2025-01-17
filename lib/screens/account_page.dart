@@ -257,3 +257,13 @@ class _AccountPageState extends State<AccountPage> {
         ),
       );
     }
+
+    String _formatBalanceWithComma(double balance) {
+        if (balance.isNegative) {
+          return '-' +
+              nepaliNumberFormatter(
+                balance.abs(),
+              );
+        } else
+          return nepaliNumberFormatter(balance, decimalDigits: 2);
+      }
