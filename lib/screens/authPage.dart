@@ -216,3 +216,14 @@ Future<void> restoreUserBackup(String url) async {
       rethrow;
     }
   }
+
+    loginUser() async {
+      final data = await UserService().loginUser(username: usernameTextEditingController.text, password: passwordTextEditingController.text);
+      var user = await FirebaseAuth.instance.currentUser;
+      await AppDatabase().myDatabase.userDao.insertData(
+            UserCompanion(mobileNumber: Value<String>(user!.uid), name: Value<String>(usernameTextEditingController.text), userData: Value<String>(user.refreshToken ?? ""), expiryDate: Value.absent()),
+          );
+      SharedPreferenceService().userName = usernameTextEditingController.text;
+      SharedPreferenceService().accessToken = user.uid;
+    }
+}
