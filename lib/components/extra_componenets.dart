@@ -336,3 +336,13 @@ IconData kDefaultIconData = VectorIcons.fromName(
   'hornbill',
   provider: IconProvider.FontAwesome5,
 );
+
+void showSnackBar(BuildContext context, String message, {bool isSuccess = false}) {
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    backgroundColor: isSuccess ? Colors.green : Colors.red,
+    content: AdaptiveText(
+      TextModel(message.toString()),
+      style: TextStyle(color: Colors.white),
+    ),
+  ));
+}
