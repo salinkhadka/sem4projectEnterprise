@@ -267,3 +267,16 @@ class _AccountPageState extends State<AccountPage> {
         } else
           return nepaliNumberFormatter(balance, decimalDigits: 2);
       }
+
+      void _deleteDialog(AccountDataModel account) {
+          showDeleteDialog(context, title: 'Delete Account', deleteButtonText: 'Delete', onDeletePress: () async {
+            try {
+              await AppDatabase().myDatabase.accountDao.deleteAccount(account.id);
+              Navigator.of(context, rootNavigator: true).pop(true);
+            } catch (e) {
+              Navigator.of(context, rootNavigator: true).pop(true);
+              showSnackBar(context, e.toString());
+            }
+          }, description: 'Are you sure you want to delete this account?');
+        }
+      }
