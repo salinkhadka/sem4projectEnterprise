@@ -91,3 +91,15 @@ Future<dynamic> showDeleteDialog(BuildContext context,
     return value;
   });
 }
+
+Widget chipDecoratedContainer(String text, {Color? chipColor}) {
+  return Container(
+    padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
+    decoration: BoxDecoration(borderRadius: BorderRadius.circular(20.0), color: chipColor ?? Configuration().deleteColor),
+    child: AdaptiveText(
+      TextModel(text),
+      style: TextStyle(color: Colors.white, fontSize: 15),
+      textAlign: TextAlign.center,
+    ),
+  );
+}
