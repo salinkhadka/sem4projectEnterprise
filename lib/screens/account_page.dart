@@ -349,3 +349,183 @@ class _AccountDialogState extends State<AccountDialog> {
     });
     super.initState();
   }
+
+  @override
+    Widget build(BuildContext context) {
+      language = Provider.of<PreferenceProvider>(context).language;
+      return Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(18.0))),
+        backgroundColor: Colors.white,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 26, horizontal: 23),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          if (accountDataModel?.isSystem == false || accountDataModel == null) ...[
+                            Row(
+                              children: <Widget>[
+                                SvgPicture.string(
+                                  userLogo,
+                                  allowDrawingOutsideViewBox: true,
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                AdaptiveText(
+                                  TextModel('Account Type'),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: const Color(0xff43425d),
+                                    height: 1.5625,
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            CustomDropDown(
+                                selectedValue: _accountType,
+                                onValueSelected: (value) {
+                                  setState(() {
+                                    _accountType = value;
+                                  });
+                                },
+                                values: accounts
+                                    .map(
+                                      (e) => ValueModel(
+                                        id: e.id,
+                                        name: e.name,
+                                        nepaliName: e.nepaliName,
+                                        iconData: Icon(VectorIcons.fromName(e.iconName ?? 'hornbill', provider: IconProvider.FontAwesome5)),
+                                      ),
+                                    )
+                                    .toList()),
+                          ],
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            children: <Widget>[
+                              SvgPicture.string(
+                                userLogo,
+                                allowDrawingOutsideViewBox: true,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              AdaptiveText(
+                                TextModel('Enter Account Name'),
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: const Color(0xff43425d),
+                                  height: 1.5625,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          TextFormField(
+                            validator: Validators.emptyFieldValidator,
+                            controller: _accountNameController,
+                            style: TextStyle(color: Colors.grey[800], fontSize: 20.0),
+                            decoration: InputDecoration(),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            children: <Widget>[
+                              SvgPicture.string(
+                                loadingIcon,
+                                allowDrawingOutsideViewBox: true,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              AdaptiveText(
+                                TextModel('Opening Balance Date'),
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: const Color(0xff43425d),
+                                  height: 1.5625,
+                                ),
+                              ),
+                            ],
+                          ),
+                          dateField(dateTime: openingBalanceDate),
+                          formSeperator(),
+                          Row(
+                            children: <Widget>[
+                              SvgPicture.string(
+                                loadingIcon,
+                                allowDrawingOutsideViewBox: true,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              AdaptiveText(
+                                TextModel('Enter Opening Balance'),
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: const Color(0xff43425d),
+                                  height: 1.5625,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 5.0),
+                      TextFormField(
+                        validator: Validators.doubleValidator,
+                        // (value) => value!.isEmpty
+                        //     ? language == Lang.EN
+                        //         ? 'Balance Cannot be Empty'
+                        //         : 'ब्यालेन्स खाली हुन सक्दैन'
+                        //     : null,
+                        decoration: InputDecoration(),
+                        controller: _openingBalanceController,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        style: TextStyle(color: Colors.grey[800], fontSize: 20.0),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 25.0),
+                TextButton.icon(
+                  icon: Icon(
+                    Icons.add,
+                    size: 20,
+                    color: Colors.white,
+                  ),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.resolveWith((states) => Configuration().incomeColor),
+                  ),
+                  onPressed: accountDataModel == null ? _addAccount : _updateAccount,
+                  label: AdaptiveText(
+                    TextModel(accountDataModel == null ? 'Add Account' : "Update Account"),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 17.0, color: Colors.white),
+                  ),
+                ),
+                SizedBox(height: 8.0),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
