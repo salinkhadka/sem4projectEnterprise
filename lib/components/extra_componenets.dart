@@ -103,3 +103,127 @@ Widget chipDecoratedContainer(String text, {Color? chipColor}) {
     ),
   );
 }
+
+Future<dynamic> detailDialog(BuildContext context, {Function(dynamic)? onDialogClosed, Function? onDelete, Function? onUpdate, String? title, bool? showButton, Widget? detailWidget}) async {
+  return await showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
+        backgroundColor: Colors.white,
+        contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 25),
+        title: AdaptiveText(
+          TextModel(title ?? 'Detail'),
+          style: TextStyle(
+            fontSize: 20,
+            color: Configuration().deleteColor,
+            fontWeight: FontWeight.w700,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(top: 0.0, left: 15.0, right: 15.0, bottom: 10.0),
+              child: detailWidget ??
+                  SizedBox(
+                    height: 1,
+                  ),
+            ),
+            SizedBox(height: 20.0),
+            if (showButton ?? true)
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  InkWell(
+                    onTap: () {
+                      FocusScope.of(context).requestFocus(new FocusNode());
+                      if (onDelete != null) onDelete();
+                    },
+                    child: chipDecoratedContainer('Delete'),
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      FocusScope.of(context).requestFocus(new FocusNode());
+                      if (onUpdate != null) {
+                        onUpdate();
+                      }
+                    },
+                    child: chipDecoratedContainer('Update', chipColor: Color(0xffb380f6)),
+                  ),
+                ],
+              ),
+            SizedBox(height: 8.0),
+          ],
+        ),
+      );
+    },
+  ).then((value) {
+    if (onDialogClosed != null) onDialogClosed(value);
+  });
+}
+
+Future<dynamic> detailDialog(BuildContext context, {Function(dynamic)? onDialogClosed, Function? onDelete, Function? onUpdate, String? title, bool? showButton, Widget? detailWidget}) async {
+  return await showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
+        backgroundColor: Colors.white,
+        contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 25),
+        title: AdaptiveText(
+          TextModel(title ?? 'Detail'),
+          style: TextStyle(
+            fontSize: 20,
+            color: Configuration().deleteColor,
+            fontWeight: FontWeight.w700,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(top: 0.0, left: 15.0, right: 15.0, bottom: 10.0),
+              child: detailWidget ??
+                  SizedBox(
+                    height: 1,
+                  ),
+            ),
+            SizedBox(height: 20.0),
+            if (showButton ?? true)
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  InkWell(
+                    onTap: () {
+                      FocusScope.of(context).requestFocus(new FocusNode());
+                      if (onDelete != null) onDelete();
+                    },
+                    child: chipDecoratedContainer('Delete'),
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      FocusScope.of(context).requestFocus(new FocusNode());
+                      if (onUpdate != null) {
+                        onUpdate();
+                      }
+                    },
+                    child: chipDecoratedContainer('Update', chipColor: Color(0xffb380f6)),
+                  ),
+                ],
+              ),
+            SizedBox(height: 8.0),
+          ],
+        ),
+      );
+    },
+  ).then((value) {
+    if (onDialogClosed != null) onDialogClosed(value);
+  });
+}
