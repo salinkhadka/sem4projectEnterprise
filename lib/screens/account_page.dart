@@ -549,3 +549,25 @@ class _AccountDialogState extends State<AccountDialog> {
           }
         }
       }
+
+      void _updateAccount() async {
+          FocusScope.of(context).requestFocus(new FocusNode());
+          if (_formKey.currentState!.validate()) {
+            try {
+              await AppDatabase().myDatabase.accountDao.updateData(
+                    AccountCompanion(
+                      accountTypeId: Value<int>(_accountType!),
+                      balance: Value<double>(double.parse(_openingBalanceController.text)),
+                      name: Value<String>(_accountNameController.text),
+                      nepaliName: Value<String>(_accountNameController.text),
+                      id: Value<int>(accountDataModel!.id),
+                      openingBalanceDate: Value<DateTime?>(this.openingBalanceDate),
+                      isSystem: Value<bool>(accountDataModel!.isSystem),
+                    ),
+                  );
+              Navigator.pop(context);
+            } catch (e) {
+              showSnackBar(context, e.toString());
+            }
+          }
+        }
