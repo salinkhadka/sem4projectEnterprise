@@ -529,3 +529,23 @@ class _AccountDialogState extends State<AccountDialog> {
         ),
       );
     }
+
+    void _addAccount() async {
+        FocusScope.of(context).requestFocus(new FocusNode());
+        if (_formKey.currentState!.validate()) {
+          try {
+            final int id = await AppDatabase().myDatabase.accountDao.insertData(
+                  AccountCompanion(
+                    accountTypeId: Value<int>(_accountType!),
+                    balance: Value<double>(double.parse(_openingBalanceController.text)),
+                    name: Value<String>(_accountNameController.text),
+                    nepaliName: Value<String>(_accountNameController.text),
+                    openingBalanceDate: Value<DateTime?>(this.openingBalanceDate),
+                  ),
+                );
+            Navigator.pop(context, id);
+          } catch (e) {
+            showSnackBar(context, e.toString());
+          }
+        }
+      }
