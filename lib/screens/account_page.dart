@@ -310,3 +310,14 @@ class _AccountPageState extends State<AccountPage> {
             );
         }
       }
+
+class AccountDialog extends StatefulWidget {
+  final AccountDataModel? accountDataModel;
+  const AccountDialog({
+    Key? key,
+    this.accountDataModel,
+  }) : super(key: key);
+
+  @override
+  _AccountDialogState createState() => _AccountDialogState();
+}
