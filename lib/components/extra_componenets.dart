@@ -241,3 +241,67 @@ Future<dynamic> showFormDialog(BuildContext context,
     },
   );
 }
+
+Future<dynamic> showErrorDialog(BuildContext context, String errorMessage, {bool isSuccess = false, bool awaitForDialog = false}) async {
+  final Widget dialog = Dialog(
+    backgroundColor: Colors.transparent,
+    child: Container(
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(18.0))),
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 35, horizontal: 23),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Center(
+                child: AdaptiveText(
+                  TextModel(isSuccess ? 'Success' : 'Error'),
+                  style: TextStyle(color: Configuration().deleteColor, fontSize: 19.0, fontWeight: FontWeight.w500),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              AdaptiveText(
+                TextModel(errorMessage),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 25.0),
+              TextButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.resolveWith((states) => Configuration().secondaryColor),
+                    textStyle: MaterialStateProperty.resolveWith((states) => TextStyle(color: Colors.white))),
+                onPressed: () async {
+                  // FocusScope.of(context).requestFocus(new FocusNode());
+                  Navigator.of(context).pop();
+                },
+                child: AdaptiveText(
+                  TextModel('Dismiss'),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 17.0, color: Colors.white),
+                ),
+              ),
+              SizedBox(height: 8.0),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+  if (awaitForDialog)
+    return await showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return dialog;
+      },
+    );
+  else
+    return showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return dialog;
+      },
+    );
+}
