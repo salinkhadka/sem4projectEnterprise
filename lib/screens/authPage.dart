@@ -178,7 +178,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     );
   }
 
-Future<void> restoreUserBackup(String url) async {
+  Future<void> restoreUserBackup(String url) async {
     try {
       final inputFileStream = InputFileStream(url);
       Archive archive = ZipDecoder().decodeBuffer(inputFileStream);
@@ -217,13 +217,13 @@ Future<void> restoreUserBackup(String url) async {
     }
   }
 
-    loginUser() async {
-      final data = await UserService().loginUser(username: usernameTextEditingController.text, password: passwordTextEditingController.text);
-      var user = await FirebaseAuth.instance.currentUser;
-      await AppDatabase().myDatabase.userDao.insertData(
-            UserCompanion(mobileNumber: Value<String>(user!.uid), name: Value<String>(usernameTextEditingController.text), userData: Value<String>(user.refreshToken ?? ""), expiryDate: Value.absent()),
-          );
-      SharedPreferenceService().userName = usernameTextEditingController.text;
-      SharedPreferenceService().accessToken = user.uid;
-    }
+  loginUser() async {
+    final data = await UserService().loginUser(username: usernameTextEditingController.text, password: passwordTextEditingController.text);
+    var user = await FirebaseAuth.instance.currentUser;
+    await AppDatabase().myDatabase.userDao.insertData(
+          UserCompanion(mobileNumber: Value<String>(user!.uid), name: Value<String>(usernameTextEditingController.text), userData: Value<String>(user.refreshToken ?? ""), expiryDate: Value.absent()),
+        );
+    SharedPreferenceService().userName = usernameTextEditingController.text;
+    SharedPreferenceService().accessToken = user.uid;
+  }
 }
