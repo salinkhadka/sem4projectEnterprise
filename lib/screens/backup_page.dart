@@ -157,3 +157,31 @@ class _BackUpPageState extends State<BackUpPage> {
       Navigator.of(context, rootNavigator: true).pop();
     });
   }
+
+  Future<File> createBackup(Lang language) async {
+    try {
+      Directory dir = await getApplicationDocumentsDirectory();
+      var encoder = ZipFileEncoder();
+      String zipPath = dir.path + '/temporary/$backupFileName';
+      encoder.create(zipPath);
+      await AppDatabase().myDatabase.closeDatabase();
+      final databaseFile = File(await getDatabaseFilePath);
+      encoder.addFile(databaseFile);
+      final Directory imageDir = await Configuration().getImageStorageDirectory();
+      encoder.addDirectory(imageDir);
+
+      encoder.close();
+      dir = (await getExternalStorageDirectory())!;
+      final zipDirectory = await Directory(dir.path + '/temporary').create(recursive: true);
+      String newzipPath = zipDirectory.path + '/$backupFileName';
+      final value = await File(zipPath).copy(newzipPath);
+      File(zipPath).deleteSync(recursive: true);
+
+      await UserService().backupData(value);
+      SharedPreferenceService().lastBackupDate = DateTime.now().toIso8601String();
+      setState(() {});
+      return File(newzipPath);
+    } catch (e) {
+      rethrow;
+    }
+  }
