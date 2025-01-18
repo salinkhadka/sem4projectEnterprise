@@ -372,3 +372,44 @@ class _BudgetPageState extends State<BudgetPage> with SingleTickerProviderStateM
     }, deleteButtonText: 'Clear  ');
   }
 
+  var _formKey = GlobalKey<FormState>();
+
+  void _setBudgetDialog(BudgetModel budgetModel, int year, int month, {String action = 'set'}) {
+    final TextEditingController _budgetAmountController = TextEditingController(text: budgetModel.budget?.toString());
+    showFormDialog(
+      context,
+      buttonText: (action == 'set' ? 'Set' : 'Update') + ' Budget',
+      onButtonPressed: () async {
+        if (_formKey.currentState!.validate()) {
+          try {
+            if (budgetModel.id == null)
+              await AppDatabase().myDatabase.budgetDao.setBudget(budgetModel.categoryId, year, month, double.parse(_budgetAmountController.text));
+            else
+              await AppDatabase().myDatabase.budgetDao.updateBudget(budgetModel.id!, double.parse(_budgetAmountController.text));
+            Navigator.of(context, rootNavigator: true).pop(true);
+          } catch (e) {
+            showSnackBar(context, e.toString());
+          }
+        }
+      },
+      title: language == Lang.EN ? budgetModel.categoryName : budgetModel.categoryNepaliName,
+      bodyWidget: Form(
+        key: _formKey,
+        child: TextFormField(
+          validator: Validators.doubleValidator,
+          controller: _budgetAmountController,
+          autofocus: true,
+          keyboardType: TextInputType.number,
+          style: TextStyle(color: Colors.grey[800], fontSize: 16.0),
+          decoration: InputDecoration(
+            hintText: language == Lang.EN ? 'Budget amount' : 'बजेट रकम',
+          ),
+        ),
+      ),
+    ).then((value) {
+      if (value ?? false) {
+        setState(() {});
+      }
+    });
+  }
+}
