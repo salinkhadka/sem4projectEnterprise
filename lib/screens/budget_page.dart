@@ -126,3 +126,85 @@ class _BudgetPageState extends State<BudgetPage> with SingleTickerProviderStateM
       ),
     );
   }
+
+  Widget _buildBody(int month, int year) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 23.0),
+      child: Container(
+        decoration: pageBorderDecoration,
+        padding: EdgeInsets.only(top: 10),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              StreamBuilder<double>(
+                  stream: AppDatabase().myDatabase.budgetDao.getCumulativeBudgetProjectionUptoDateTime(NepaliDateTime(year, month)),
+                  builder: (context, snapshot) {
+                    print(snapshot.error.toString());
+                    final value = snapshot.data ?? 0.0;
+                    return Column(
+                      children: [
+                        AdaptiveText(
+                          TextModel('Cumulative Cash Projection'),
+                          style: TextStyle(
+                            fontSize: 17,
+                            color: Configuration().secondaryColor,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Text(
+                          (value == 0
+                                  ? ''
+                                  : value.isNegative
+                                      ? '-'
+                                      : '+') +
+                              ' ' +
+                              nepaliNumberFormatter(value.abs()),
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: value == 0
+                                ? Configuration().secondaryColor
+                                : value.isNegative
+                                    ? Configuration().expenseColor
+                                    : Configuration().incomeColor,
+                          ),
+                        ),
+                      ],
+                    );
+                  }),
+              Divider(),
+              Expanded(
+                child: StreamBuilder<List<BudgetModel>>(
+                  stream: AppDatabase().myDatabase.budgetDao.getBudgetProjectionByMonth(widget.isInflowProjection ?? false, NepaliDateTime(year, month)),
+                  builder: ((context, snapshot) {
+                    print(snapshot.error.toString());
+
+                    if (snapshot.hasData) {
+                      if (snapshot.data!.isEmpty) {
+                        return centerHintText(text: 'Categories Not Found');
+                      }
+                      final groupedBudgetData = snapshot.data!.groupBy((p0) => p0.categoryHeadingId);
+                      final keys = groupedBudgetData.keys.toList();
+                      return ListView.separated(
+                          padding: EdgeInsets.fromLTRB(8, 0, 0, 20),
+                          itemBuilder: (context, index) {
+                            final currentData = groupedBudgetData[keys[index]]!;
+
+                            return _categoryHeadingCategories(TextModel(currentData.first.categoryHeadingName, nepaliName: currentData.first.categoryHeadingNepaliName), currentData, year, month);
+                          },
+                          separatorBuilder: (context, _) => SizedBox(height: 20.0),
+                          itemCount: keys.length);
+                    } else
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                  }),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
