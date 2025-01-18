@@ -198,3 +198,44 @@ class _BackUpPageState extends State<BackUpPage> {
       description: 'Are you sure you want to restore last backup file, All the current changes will be lost and cannot be recovered.',
     );
   }
+
+  restoreBackUpDataFromGoogle() async {
+    ProgressDialog progressDialog = ProgressDialog(
+      context,
+    )..style(child: Center(child: CircularProgressIndicator()), message: 'Restoring Backup');
+    try {
+      final confirmRestore = await showRestoreBackupConfirmationDialog();
+      if (confirmRestore ?? false) {
+        await progressDialog.show();
+        final downloadedFile = await UserService().getBackupMediaFileFromDrive();
+        List<int> _fileBytes = [];
+        downloadedFile.stream.listen((event) {
+          _fileBytes.addAll(event);
+        }, onDone: () async {
+          try {
+            await UserService().restoreBackup(_fileBytes);
+            await progressDialog.hide();
+            // showRestoreSucessDialog().then((value) {
+            Navigator.of(context).pushNamedAndRemoveUntil(Routes.splashPage, (route) => false);
+            // });
+          } catch (e) {
+            await progressDialog.hide();
+            if (e.runtimeType == String)
+              showErrorToast('Error' + ' : ' + e.toString());
+            else
+              showErrorToast('Error restoring data, Please try again.');
+          }
+        }, onError: (e) async {
+          await progressDialog.hide();
+          showErrorToast('Error restoring data, Please try again.');
+        });
+      }
+    } catch (e) {
+      await progressDialog.hide();
+      if (e.runtimeType == String)
+        showErrorToast('Error' + ' : ' + e.toString());
+      else
+        showErrorToast('Error restoring data, Please try again.');
+    }
+  }
+}
