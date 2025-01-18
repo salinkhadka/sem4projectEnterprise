@@ -145,3 +145,9 @@ class _BackUpPageState extends State<BackUpPage> {
       ),
     );
   }
+
+  showAlertDialog() {
+    showDeleteDialog(context, hideCancel: true, deleteButtonText: 'Go To Profile', description: 'You have to create account to create backup, Please create account and try again.', onDeletePress: () {
+      Navigator.of(context, rootNavigator: true).pop();
+    });
+  }
