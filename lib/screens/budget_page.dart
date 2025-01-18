@@ -64,3 +64,65 @@ class _BudgetPageState extends State<BudgetPage> with SingleTickerProviderStateM
       }
     }
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      key: _scaffoldKey,
+      backgroundColor: Configuration().appColor,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          if ((await showDialog(
+                context: context,
+                builder: (context) => Consumer<PreferenceProvider>(
+                  builder: (context, value, child) => CategoryDialog(
+                    isCashIn: widget.isInflowProjection!,
+                  ),
+                ),
+              )) ??
+              false) {
+            setState(() {});
+          }
+        },
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+          size: 27,
+        ),
+        backgroundColor: Configuration().secondaryColor,
+      ),
+      appBar: AppBar(
+        title: AdaptiveText(
+          TextModel('Cash ' + (isInflow ? 'Inflow' : 'Outflow') + ' Projection'),
+          style: TextStyle(fontSize: 17),
+        ),
+        bottom: TabBar(
+          controller: _tabController,
+          isScrollable: true,
+          tabs: [
+            for (int index = 0; index < noOfmonths; index++)
+              Tab(
+                child: Text(
+                  NepaliDateFormat(
+                    "MMMM ''yy",
+                  ).format(
+                    NepaliDateTime(_dateResolver[index].year, _dateResolver[index].month),
+                  ),
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+          ],
+        ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          for (int month = 0; month < noOfmonths; month++)
+            _buildBody(
+              _dateResolver[month].month,
+              _dateResolver[month].year,
+            ),
+        ],
+      ),
+    );
+  }
