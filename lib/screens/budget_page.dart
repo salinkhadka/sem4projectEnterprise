@@ -338,3 +338,16 @@ class _BudgetPageState extends State<BudgetPage> with SingleTickerProviderStateM
       ),
     );
   }
+
+  Color getColor(bool isInflow, double projectedBalance, double actualBalance) {
+    return Configuration().secondaryColor;
+    final List<Color> colors = [Configuration().incomeColor, Configuration().expenseColor];
+    if (actualBalance == projectedBalance) {
+      return Configuration().secondaryColor;
+    }
+    if (actualBalance > projectedBalance) {
+      return isInflow ? colors[0] : colors[1];
+    } else {
+      return isInflow ? colors[1] : colors[0];
+    }
+  }
