@@ -362,3 +362,13 @@ class _BudgetPageState extends State<BudgetPage> with SingleTickerProviderStateM
     }
     return 0.0;
   }
+
+  void _clearBudgetDialog(BudgetModel budget, int year, int month) {
+    showDeleteDialog(context,
+        description: language == Lang.EN ? 'Are you sure to clear the budget for ${budget.categoryName}?' : 'के तपाई ${budget.categoryNepaliName}को लागि बजेट खाली गर्न निश्चित हुनुहुन्छ?',
+        title: 'Clear Budget', onDeletePress: () async {
+      await AppDatabase().myDatabase.budgetDao.clearBudget(budget.categoryId, year, month);
+      Navigator.of(context, rootNavigator: true).pop(true);
+    }, deleteButtonText: 'Clear  ');
+  }
+
