@@ -351,3 +351,14 @@ class _BudgetPageState extends State<BudgetPage> with SingleTickerProviderStateM
       return isInflow ? colors[1] : colors[0];
     }
   }
+
+  double getProgressValue(String spent, String total) {
+    int _total = int.tryParse(total) ?? 0;
+    int _spent = int.tryParse(spent) ?? 0;
+    if (_total == 0 && _spent == 0) return 1;
+    if (_spent > _total) return 2;
+    if (_total != 0 && _spent != 0) {
+      return _spent / _total;
+    }
+    return 0.0;
+  }
