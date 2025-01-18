@@ -151,3 +151,9 @@ class _BackUpPageState extends State<BackUpPage> {
       Navigator.of(context, rootNavigator: true).pop();
     });
   }
+
+  Future<void> showErrorDialog(String descritpion, String? title) async {
+    await showDeleteDialog(context, title: title, hideCancel: true, deleteButtonText: 'Okay    ', description: descritpion, onDeletePress: () {
+      Navigator.of(context, rootNavigator: true).pop();
+    });
+  }
