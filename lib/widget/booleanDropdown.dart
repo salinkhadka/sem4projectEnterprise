@@ -19,3 +19,22 @@ class BooleanDropDown extends StatelessWidget {
     required this.onValueSelected,
     this.validator,
   }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomDropDown(
+        validator: validator,
+        selectedValue: selectedValue == null
+            ? null
+            : selectedValue == true
+                ? 1
+                : 2,
+        onValueSelected: (value) {
+          return onValueSelected(value == 1);
+        },
+        values: [
+          ValueModel(id: 1, name: 'Yes', nepaliName: nepaliYesTranslation ?? 'हुन्छ'),
+          ValueModel(id: 2, name: 'No', nepaliName: nepaliNoTranslation ?? 'हुदैन'),
+        ]);
+  }
+}
