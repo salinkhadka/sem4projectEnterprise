@@ -257,3 +257,84 @@ class _BudgetPageState extends State<BudgetPage> with SingleTickerProviderStateM
       ],
     );
   }
+
+  Widget _buildCard(BudgetModel budgetModel, int year, int month) {
+    return PopupMenuButton<int>(
+      color: Colors.white,
+      onSelected: (value) async {
+        if (value == 1) {
+          _setBudgetDialog(budgetModel, year, month, action: budgetModel.id == null ? 'set' : 'update');
+        } else {
+          _clearBudgetDialog(budgetModel, year, month);
+        }
+      },
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          value: 1,
+          child: AdaptiveText(
+            TextModel(budgetModel.id == null ? 'Set Budget' : 'Update Budget'),
+            style: TextStyle(color: Colors.grey[700]),
+          ),
+        ),
+        if (budgetModel.id != null)
+          PopupMenuItem(
+            value: 2,
+            child: AdaptiveText(
+              TextModel('Clear Budget'),
+              style: TextStyle(color: Colors.grey[700]),
+            ),
+          ),
+      ],
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(
+              30,
+            ),
+            border: Border.all(color: Configuration().borderColor)),
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            if (budgetModel.categoryIcon == null)
+              Icon(
+                VectorIcons.fromName(
+                  'hornbill',
+                  provider: IconProvider.FontAwesome5,
+                ),
+                color: Configuration().incomeColor,
+                size: 20.0,
+              )
+            else
+              SvgPicture.asset('assets/images/${budgetModel.categoryIcon}'),
+            SizedBox(width: 15.0),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  AdaptiveText(
+                    TextModel(budgetModel.categoryName, nepaliName: budgetModel.categoryNepaliName),
+                    style: TextStyle(fontSize: 15.0, color: Colors.black),
+                  ),
+                  SizedBox(height: 2.0),
+                  AdaptiveText(
+                    TextModel((budgetModel.id == null) ? 'Touch to set' : 'Touch to update'),
+                    style: TextStyle(fontSize: 11.0, color: Colors.grey, fontWeight: FontWeight.w500),
+                  ),
+                ],
+              ),
+            ),
+            Text(
+              nepaliNumberFormatter(budgetModel.budget ?? 0.0),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                color: getColor(isInflow, budgetModel.budget ?? 0.0, budgetModel.amount ?? 0.0),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
