@@ -185,3 +185,16 @@ class _BackUpPageState extends State<BackUpPage> {
       rethrow;
     }
   }
+
+  Future<bool?> showRestoreBackupConfirmationDialog() async {
+    return await showDeleteDialog(
+      context,
+      title: "Confirm Restore",
+      onDeletePress: () {
+        Navigator.of(context).pop(true);
+      },
+      deleteButtonText: "Confirm",
+      topIcon: Icons.restore,
+      description: 'Are you sure you want to restore last backup file, All the current changes will be lost and cannot be recovered.',
+    );
+  }
