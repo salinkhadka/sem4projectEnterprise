@@ -142,3 +142,26 @@ class _AddTransactionItemDialogState extends State<AddTransactionItemDialog> {
       ),
     );
   }
+
+  void _addPerson() async {
+    FocusScope.of(context).requestFocus(new FocusNode());
+    if (_formKey.currentState!.validate()) {
+      try {
+        widget.onItemAdd(
+          TransactionItemData(
+            personId: -1,
+            id: -1,
+            transactionId: -1,
+            itemId: itemId!,
+            quantity: double.parse(quantityController.text),
+            amount: double.parse(amountController.text),
+            createdDate: DateTime.now(),
+          ),
+        );
+        Navigator.of(context, rootNavigator: true).pop(true);
+      } catch (e) {
+        showSnackBar(context, e.toString());
+      }
+    }
+  }
+}
