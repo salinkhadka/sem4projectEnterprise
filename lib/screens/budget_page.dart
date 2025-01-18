@@ -208,3 +208,52 @@ class _BudgetPageState extends State<BudgetPage> with SingleTickerProviderStateM
       ),
     );
   }
+
+  Widget _categoryHeadingCategories(TextModel textModel, List<BudgetModel> budgetModel, int year, int month) {
+    final calculatedData = budgetModel.reduce((value, element) => BudgetModel(
+        budget: (value.budget ?? 0.0) + (element.budget ?? 0.0),
+        amount: (value.amount ?? 0.0) + (element.amount ?? 0.0),
+        categoryName: '',
+        categoryNepaliName: '',
+        categoryHeadingName: value.categoryHeadingName,
+        categoryHeadingId: value.categoryHeadingId,
+        categoryId: 0));
+    budgetModel.sort((a, b) => a.categoryName.toLowerCase().compareTo(b.categoryName.toLowerCase()));
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: AdaptiveText(
+                textModel,
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 15,
+                ),
+              ),
+            ),
+            Text(
+              nepaliNumberFormatter(calculatedData.budget ?? 0.0),
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+                color: getColor(isInflow, calculatedData.budget ?? 0.0, calculatedData.amount ?? 0.0),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        ListView.separated(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              return _buildCard(budgetModel[index], year, month);
+            },
+            separatorBuilder: (context, _) => SizedBox(height: 20.0),
+            itemCount: budgetModel.length),
+      ],
+    );
+  }
