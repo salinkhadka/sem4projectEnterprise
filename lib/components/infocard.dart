@@ -86,7 +86,8 @@ class InfoCard extends StatelessWidget {
       children: <Widget>[
         AdaptiveText(
           TextModel(title.toUpperCase()),
-          style: TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.w500),
+          style: TextStyle(
+              fontSize: 15, color: Colors.black, fontWeight: FontWeight.w500),
         ),
         SizedBox(
           height: 5,
@@ -99,8 +100,14 @@ class InfoCard extends StatelessWidget {
           svgImageName: 'arrow_left',
           value: value.outflow,
         ),
-        getRowValue(svgImageName: 'monthly_surplus', value: value.inflowMINUSoutflow, valueColor: Colors.green),
-        getRowValue(svgImageName: 'cumulative_surplus', value: value.cf, valueColor: Colors.green),
+        getRowValue(
+            svgImageName: 'monthly_surplus',
+            value: value.inflowMINUSoutflow,
+            valueColor: Colors.green),
+        getRowValue(
+            svgImageName: 'cumulative_surplus',
+            value: value.cf,
+            valueColor: Colors.green),
       ],
     );
   }
@@ -112,14 +119,21 @@ class InfoCard extends StatelessWidget {
   }) {
     return Row(
       children: [
-        if (svgImageName != null) SvgPicture.asset('assets/images/$svgImageName.svg', width: 18, color: Colors.black),
+        if (svgImageName != null)
+          SvgPicture.asset('assets/images/$svgImageName.svg',
+              width: 18, color: Colors.black),
         SizedBox(
           width: 4,
         ),
         Flexible(
           child: Text(
-            (value.isNegative ? '(' : '') + nepaliNumberFormatter((value.abs())) + (value.isNegative ? ')' : ''),
-            style: TextStyle(fontSize: 18, color: value.isNegative ? Colors.red : valueColor, fontWeight: FontWeight.w500),
+            (value.isNegative ? '(' : '') +
+                nepaliNumberFormatter((value.abs())) +
+                (value.isNegative ? ')' : ''),
+            style: TextStyle(
+                fontSize: 18,
+                color: value.isNegative ? Colors.red : valueColor,
+                fontWeight: FontWeight.w500),
           ),
         )
       ],
