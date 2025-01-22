@@ -3197,6 +3197,311 @@ class AccountTypeCompanion extends UpdateCompanion<AccountTypeData> {
   }
 }
 
+class $UserTable extends User with TableInfo<$UserTable, UserData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $UserTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _mobileNumberMeta =
+      const VerificationMeta('mobileNumber');
+  @override
+  late final GeneratedColumn<String> mobileNumber = GeneratedColumn<String>(
+      'mobile_number', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _userDataMeta =
+      const VerificationMeta('userData');
+  @override
+  late final GeneratedColumn<String> userData = GeneratedColumn<String>(
+      'user_data', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _expiryDateMeta =
+      const VerificationMeta('expiryDate');
+  @override
+  late final GeneratedColumn<DateTime> expiryDate = GeneratedColumn<DateTime>(
+      'expiry_date', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, name, mobileNumber, userData, expiryDate];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'user';
+  @override
+  VerificationContext validateIntegrity(Insertable<UserData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('mobile_number')) {
+      context.handle(
+          _mobileNumberMeta,
+          mobileNumber.isAcceptableOrUnknown(
+              data['mobile_number']!, _mobileNumberMeta));
+    } else if (isInserting) {
+      context.missing(_mobileNumberMeta);
+    }
+    if (data.containsKey('user_data')) {
+      context.handle(_userDataMeta,
+          userData.isAcceptableOrUnknown(data['user_data']!, _userDataMeta));
+    } else if (isInserting) {
+      context.missing(_userDataMeta);
+    }
+    if (data.containsKey('expiry_date')) {
+      context.handle(
+          _expiryDateMeta,
+          expiryDate.isAcceptableOrUnknown(
+              data['expiry_date']!, _expiryDateMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  UserData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return UserData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      mobileNumber: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}mobile_number'])!,
+      userData: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}user_data'])!,
+      expiryDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}expiry_date']),
+    );
+  }
+
+  @override
+  $UserTable createAlias(String alias) {
+    return $UserTable(attachedDatabase, alias);
+  }
+}
+
+class UserData extends DataClass implements Insertable<UserData> {
+  final int id;
+  final String name;
+  final String mobileNumber;
+  final String userData;
+  final DateTime? expiryDate;
+  const UserData(
+      {required this.id,
+      required this.name,
+      required this.mobileNumber,
+      required this.userData,
+      this.expiryDate});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
+    map['mobile_number'] = Variable<String>(mobileNumber);
+    map['user_data'] = Variable<String>(userData);
+    if (!nullToAbsent || expiryDate != null) {
+      map['expiry_date'] = Variable<DateTime>(expiryDate);
+    }
+    return map;
+  }
+
+  UserCompanion toCompanion(bool nullToAbsent) {
+    return UserCompanion(
+      id: Value(id),
+      name: Value(name),
+      mobileNumber: Value(mobileNumber),
+      userData: Value(userData),
+      expiryDate: expiryDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(expiryDate),
+    );
+  }
+
+  factory UserData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return UserData(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      mobileNumber: serializer.fromJson<String>(json['mobileNumber']),
+      userData: serializer.fromJson<String>(json['userData']),
+      expiryDate: serializer.fromJson<DateTime?>(json['expiryDate']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+      'mobileNumber': serializer.toJson<String>(mobileNumber),
+      'userData': serializer.toJson<String>(userData),
+      'expiryDate': serializer.toJson<DateTime?>(expiryDate),
+    };
+  }
+
+  UserData copyWith(
+          {int? id,
+          String? name,
+          String? mobileNumber,
+          String? userData,
+          Value<DateTime?> expiryDate = const Value.absent()}) =>
+      UserData(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        mobileNumber: mobileNumber ?? this.mobileNumber,
+        userData: userData ?? this.userData,
+        expiryDate: expiryDate.present ? expiryDate.value : this.expiryDate,
+      );
+  UserData copyWithCompanion(UserCompanion data) {
+    return UserData(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      mobileNumber: data.mobileNumber.present
+          ? data.mobileNumber.value
+          : this.mobileNumber,
+      userData: data.userData.present ? data.userData.value : this.userData,
+      expiryDate:
+          data.expiryDate.present ? data.expiryDate.value : this.expiryDate,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UserData(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('mobileNumber: $mobileNumber, ')
+          ..write('userData: $userData, ')
+          ..write('expiryDate: $expiryDate')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, name, mobileNumber, userData, expiryDate);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is UserData &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.mobileNumber == this.mobileNumber &&
+          other.userData == this.userData &&
+          other.expiryDate == this.expiryDate);
+}
+
+class UserCompanion extends UpdateCompanion<UserData> {
+  final Value<int> id;
+  final Value<String> name;
+  final Value<String> mobileNumber;
+  final Value<String> userData;
+  final Value<DateTime?> expiryDate;
+  const UserCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.mobileNumber = const Value.absent(),
+    this.userData = const Value.absent(),
+    this.expiryDate = const Value.absent(),
+  });
+  UserCompanion.insert({
+    this.id = const Value.absent(),
+    required String name,
+    required String mobileNumber,
+    required String userData,
+    this.expiryDate = const Value.absent(),
+  })  : name = Value(name),
+        mobileNumber = Value(mobileNumber),
+        userData = Value(userData);
+  static Insertable<UserData> custom({
+    Expression<int>? id,
+    Expression<String>? name,
+    Expression<String>? mobileNumber,
+    Expression<String>? userData,
+    Expression<DateTime>? expiryDate,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (mobileNumber != null) 'mobile_number': mobileNumber,
+      if (userData != null) 'user_data': userData,
+      if (expiryDate != null) 'expiry_date': expiryDate,
+    });
+  }
+
+  UserCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? name,
+      Value<String>? mobileNumber,
+      Value<String>? userData,
+      Value<DateTime?>? expiryDate}) {
+    return UserCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      mobileNumber: mobileNumber ?? this.mobileNumber,
+      userData: userData ?? this.userData,
+      expiryDate: expiryDate ?? this.expiryDate,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (mobileNumber.present) {
+      map['mobile_number'] = Variable<String>(mobileNumber.value);
+    }
+    if (userData.present) {
+      map['user_data'] = Variable<String>(userData.value);
+    }
+    if (expiryDate.present) {
+      map['expiry_date'] = Variable<DateTime>(expiryDate.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UserCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('mobileNumber: $mobileNumber, ')
+          ..write('userData: $userData, ')
+          ..write('expiryDate: $expiryDate')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$MyDatabase extends GeneratedDatabase {
   _$MyDatabase(QueryExecutor e) : super(e);
   $MyDatabaseManager get managers => $MyDatabaseManager(this);
@@ -3211,6 +3516,7 @@ abstract class _$MyDatabase extends GeneratedDatabase {
       $TransactionItemTable(this);
   late final $BudgetTable budget = $BudgetTable(this);
   late final $AccountTypeTable accountType = $AccountTypeTable(this);
+  late final $UserTable user = $UserTable(this);
   late final AccountDao accountDao = AccountDao(this as MyDatabase);
   late final CategoryDao categoryDao = CategoryDao(this as MyDatabase);
   late final CategoryHeadingDao categoryHeadingDao =
@@ -3223,6 +3529,7 @@ abstract class _$MyDatabase extends GeneratedDatabase {
       TransactionItemDao(this as MyDatabase);
   late final BudgetDao budgetDao = BudgetDao(this as MyDatabase);
   late final AccountTypeDao accountTypeDao = AccountTypeDao(this as MyDatabase);
+  late final UserDao userDao = UserDao(this as MyDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -3236,7 +3543,8 @@ abstract class _$MyDatabase extends GeneratedDatabase {
         transactions,
         transactionItem,
         budget,
-        accountType
+        accountType,
+        user
       ];
 }
 
@@ -4875,6 +5183,163 @@ typedef $$AccountTypeTableProcessedTableManager = ProcessedTableManager<
     ),
     AccountTypeData,
     PrefetchHooks Function()>;
+typedef $$UserTableCreateCompanionBuilder = UserCompanion Function({
+  Value<int> id,
+  required String name,
+  required String mobileNumber,
+  required String userData,
+  Value<DateTime?> expiryDate,
+});
+typedef $$UserTableUpdateCompanionBuilder = UserCompanion Function({
+  Value<int> id,
+  Value<String> name,
+  Value<String> mobileNumber,
+  Value<String> userData,
+  Value<DateTime?> expiryDate,
+});
+
+class $$UserTableFilterComposer extends Composer<_$MyDatabase, $UserTable> {
+  $$UserTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get mobileNumber => $composableBuilder(
+      column: $table.mobileNumber, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get userData => $composableBuilder(
+      column: $table.userData, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get expiryDate => $composableBuilder(
+      column: $table.expiryDate, builder: (column) => ColumnFilters(column));
+}
+
+class $$UserTableOrderingComposer extends Composer<_$MyDatabase, $UserTable> {
+  $$UserTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get mobileNumber => $composableBuilder(
+      column: $table.mobileNumber,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get userData => $composableBuilder(
+      column: $table.userData, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get expiryDate => $composableBuilder(
+      column: $table.expiryDate, builder: (column) => ColumnOrderings(column));
+}
+
+class $$UserTableAnnotationComposer extends Composer<_$MyDatabase, $UserTable> {
+  $$UserTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get mobileNumber => $composableBuilder(
+      column: $table.mobileNumber, builder: (column) => column);
+
+  GeneratedColumn<String> get userData =>
+      $composableBuilder(column: $table.userData, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get expiryDate => $composableBuilder(
+      column: $table.expiryDate, builder: (column) => column);
+}
+
+class $$UserTableTableManager extends RootTableManager<
+    _$MyDatabase,
+    $UserTable,
+    UserData,
+    $$UserTableFilterComposer,
+    $$UserTableOrderingComposer,
+    $$UserTableAnnotationComposer,
+    $$UserTableCreateCompanionBuilder,
+    $$UserTableUpdateCompanionBuilder,
+    (UserData, BaseReferences<_$MyDatabase, $UserTable, UserData>),
+    UserData,
+    PrefetchHooks Function()> {
+  $$UserTableTableManager(_$MyDatabase db, $UserTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$UserTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$UserTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$UserTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<String> mobileNumber = const Value.absent(),
+            Value<String> userData = const Value.absent(),
+            Value<DateTime?> expiryDate = const Value.absent(),
+          }) =>
+              UserCompanion(
+            id: id,
+            name: name,
+            mobileNumber: mobileNumber,
+            userData: userData,
+            expiryDate: expiryDate,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String name,
+            required String mobileNumber,
+            required String userData,
+            Value<DateTime?> expiryDate = const Value.absent(),
+          }) =>
+              UserCompanion.insert(
+            id: id,
+            name: name,
+            mobileNumber: mobileNumber,
+            userData: userData,
+            expiryDate: expiryDate,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$UserTableProcessedTableManager = ProcessedTableManager<
+    _$MyDatabase,
+    $UserTable,
+    UserData,
+    $$UserTableFilterComposer,
+    $$UserTableOrderingComposer,
+    $$UserTableAnnotationComposer,
+    $$UserTableCreateCompanionBuilder,
+    $$UserTableUpdateCompanionBuilder,
+    (UserData, BaseReferences<_$MyDatabase, $UserTable, UserData>),
+    UserData,
+    PrefetchHooks Function()>;
 
 class $MyDatabaseManager {
   final _$MyDatabase _db;
@@ -4896,4 +5361,5 @@ class $MyDatabaseManager {
       $$BudgetTableTableManager(_db, _db.budget);
   $$AccountTypeTableTableManager get accountType =>
       $$AccountTypeTableTableManager(_db, _db.accountType);
+  $$UserTableTableManager get user => $$UserTableTableManager(_db, _db.user);
 }

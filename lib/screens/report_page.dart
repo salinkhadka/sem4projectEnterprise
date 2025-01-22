@@ -7,24 +7,18 @@ import 'package:byaparlekha/config/configuration.dart';
 import 'package:byaparlekha/config/globals.dart' as globals;
 import 'package:byaparlekha/database/myDatabase/database.dart';
 import 'package:byaparlekha/models/monthlyBudgetProjectionReport.dart';
-
 import 'package:byaparlekha/models/monthyCategoryReport.dart';
 import 'package:byaparlekha/models/textModel.dart';
 import 'package:byaparlekha/providers/preference_provider.dart';
-
-import 'package:excel/excel.dart';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:byaparlekha/services/sharedPreferenceService.dart';
+import 'package:excel/excel.dart';
+import 'package:flutter/material.dart';
 import 'package:nepali_utils/nepali_utils.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
-import 'package:tuple/tuple.dart';
-import 'package:collection/collection.dart';
+
 import '../components/extra_componenets.dart';
 import '../config/globals.dart';
 

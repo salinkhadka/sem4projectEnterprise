@@ -1,15 +1,12 @@
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:byaparlekha/components/screen_size_config.dart';
 import 'package:byaparlekha/config/configuration.dart';
-
 import 'package:byaparlekha/config/routes/routes.dart';
 import 'package:byaparlekha/providers/preference_provider.dart';
 
-import 'package:flutter/material.dart';
-import 'package:byaparlekha/services/http_service.dart';
 import 'package:byaparlekha/services/sharedPreferenceService.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-
 import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -21,7 +18,6 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    HttpService().init(context);
     if (SharedPreferenceService.isReady.value) {
       initialize();
     } else

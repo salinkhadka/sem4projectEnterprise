@@ -9,6 +9,7 @@ import 'package:byaparlekha/database/item/item.dart';
 import 'package:byaparlekha/database/person/person.dart';
 import 'package:byaparlekha/database/transaction/transaction.dart';
 import 'package:byaparlekha/database/transactionItem/transactionItem.dart';
+import 'package:byaparlekha/database/user/user.dart';
 import 'package:byaparlekha/services/userService.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
@@ -38,6 +39,7 @@ class AppDatabase {
     TransactionItem,
     Budget,
     AccountType,
+    User,
   ],
   daos: [
     AccountDao,
@@ -49,6 +51,7 @@ class AppDatabase {
     TransactionItemDao,
     BudgetDao,
     AccountTypeDao,
+    UserDao,
   ],
 )
 class MyDatabase extends _$MyDatabase {

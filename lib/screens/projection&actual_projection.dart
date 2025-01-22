@@ -1,21 +1,9 @@
 import 'package:byaparlekha/components/adaptive_text.dart';
-import 'package:byaparlekha/components/drawer.dart';
-import 'package:byaparlekha/config/routes/routes.dart';
-import 'package:byaparlekha/config/utility/validator.dart';
 import 'package:byaparlekha/database/myDatabase/database.dart';
-import 'package:byaparlekha/icons/vector_icons.dart';
-
-import 'package:byaparlekha/models/budgetModel.dart';
 import 'package:byaparlekha/models/monthlyProjectionModel.dart';
-
 import 'package:byaparlekha/models/textModel.dart';
 import 'package:byaparlekha/providers/preference_provider.dart';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:byaparlekha/screens/category_page.dart';
-
 import 'package:nepali_utils/nepali_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:table_sticky_headers/table_sticky_headers.dart';
@@ -23,20 +11,16 @@ import 'package:table_sticky_headers/table_sticky_headers.dart';
 import '../components/extra_componenets.dart';
 import '../config/configuration.dart';
 import '../config/globals.dart';
-import '../models/app_page_naming.dart';
 
 class ProjectionAndActualProjectionPage extends StatefulWidget {
   const ProjectionAndActualProjectionPage({
     Key? key,
   }) : super(key: key);
   @override
-  _ProjectionAndActualProjectionPageState createState() =>
-      _ProjectionAndActualProjectionPageState();
+  _ProjectionAndActualProjectionPageState createState() => _ProjectionAndActualProjectionPageState();
 }
 
-class _ProjectionAndActualProjectionPageState
-    extends State<ProjectionAndActualProjectionPage>
-    with SingleTickerProviderStateMixin {
+class _ProjectionAndActualProjectionPageState extends State<ProjectionAndActualProjectionPage> with SingleTickerProviderStateMixin {
   int _currentYear = NepaliDateTime.now().year;
   int _currentMonth = NepaliDateTime.now().month;
   Lang? language;
@@ -51,8 +35,7 @@ class _ProjectionAndActualProjectionPageState
     super.initState();
     language = Provider.of<PreferenceProvider>(context, listen: false).language;
     initializeDateResolver();
-    _tabController = TabController(
-        length: noOfmonths, vsync: this, initialIndex: _currentMonth - 1);
+    _tabController = TabController(length: noOfmonths, vsync: this, initialIndex: _currentMonth - 1);
   }
 
   initializeDateResolver() {
@@ -89,8 +72,7 @@ class _ProjectionAndActualProjectionPageState
                   NepaliDateFormat(
                     "MMMM ''yy",
                   ).format(
-                    NepaliDateTime(
-                        _dateResolver[index].year, _dateResolver[index].month),
+                    NepaliDateTime(_dateResolver[index].year, _dateResolver[index].month),
                   ),
                   style: TextStyle(color: Colors.white),
                 ),
@@ -124,28 +106,18 @@ class _ProjectionAndActualProjectionPageState
               Divider(),
               Expanded(
                 child: FutureBuilder<List<MonthlyProjectionModel>>(
-                  future: AppDatabase()
-                      .myDatabase
-                      .budgetDao
-                      .getBudgetVsActualtProjectionForMonth(
-                          NepaliDateTime(year, month)),
+                  future: AppDatabase().myDatabase.budgetDao.getBudgetVsActualtProjectionForMonth(NepaliDateTime(year, month)),
                   builder: ((context, snapshot) {
                     if (snapshot.hasData) {
                       if (snapshot.data!.isEmpty) {
                         return centerHintText(text: 'Categories Not Found');
                       }
-                      List<String> columnTitle = [
-                        "Projected Cash Flow",
-                        "Actual Cash Flow",
-                        "Projected vs Actual Cash Flow"
-                      ];
+                      List<String> columnTitle = ["Projected Cash Flow", "Actual Cash Flow", "Projected vs Actual Cash Flow"];
 
                       return StickyHeadersTable(
                         legendCell: Container(
                           height: double.infinity,
-                          decoration: BoxDecoration(
-                              border: Border(
-                                  bottom: BorderSide(color: Colors.black))),
+                          decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.black))),
                           child: AdaptiveText(
                             TextModel(
                               "Cash Flow Source Heading",
@@ -156,22 +128,15 @@ class _ProjectionAndActualProjectionPageState
                         columnsLength: columnTitle.length,
                         showHorizontalScrollbar: true,
                         cellDimensions: CellDimensions.variableRowHeight(
-                            contentCellWidth: 100,
-                            rowHeights: List.generate(
-                                (snapshot.data ?? []).length, (index) => 60),
-                            stickyLegendWidth: 150,
-                            stickyLegendHeight: 56),
+                            contentCellWidth: 100, rowHeights: List.generate((snapshot.data ?? []).length, (index) => 60), stickyLegendWidth: 150, stickyLegendHeight: 56),
                         rowsLength: (snapshot.data ?? []).length,
                         columnsTitleBuilder: (columnIndex) {
                           return Container(
                             height: double.infinity,
                             alignment: Alignment.center,
                             padding: EdgeInsets.symmetric(horizontal: 4),
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    bottom: BorderSide(color: Colors.black))),
-                            child: AdaptiveText(
-                                TextModel(columnTitle[columnIndex])),
+                            decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.black))),
+                            child: AdaptiveText(TextModel(columnTitle[columnIndex])),
                           );
                         },
                         rowsTitleBuilder: (rowIndex) {
@@ -179,11 +144,8 @@ class _ProjectionAndActualProjectionPageState
                           return Container(
                             width: double.infinity,
                             height: double.infinity,
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    bottom: BorderSide(color: Colors.black))),
-                            child: AdaptiveText(
-                                TextModel(data?.categoryData.name ?? '')),
+                            decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.black))),
+                            child: AdaptiveText(TextModel(data?.categoryData.name ?? '')),
                           );
                         },
                         contentCellBuilder: (columnIndex, rowIndex) {
@@ -195,22 +157,14 @@ class _ProjectionAndActualProjectionPageState
                                   width: double.infinity,
                                   alignment: Alignment.centerRight,
                                   padding: EdgeInsets.only(right: 3),
-                                  decoration: BoxDecoration(
-                                      border: Border(
-                                          bottom:
-                                              BorderSide(color: Colors.black))),
-                                  child: Text(nepaliNumberFormatter(
-                                      data.budgetAmount,
-                                      decimalDigits: 2)));
+                                  decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.black))),
+                                  child: Text(nepaliNumberFormatter(data.budgetAmount, decimalDigits: 2)));
                             case 1:
                               return Container(
                                   height: double.infinity,
                                   width: double.infinity,
                                   alignment: Alignment.centerRight,
-                                  decoration: BoxDecoration(
-                                      border: Border(
-                                          bottom:
-                                              BorderSide(color: Colors.black))),
+                                  decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.black))),
                                   child: Text(nepaliNumberFormatter(
                                     data.actualAmount,
                                     decimalDigits: 2,
@@ -220,14 +174,8 @@ class _ProjectionAndActualProjectionPageState
                                   height: double.infinity,
                                   width: double.infinity,
                                   alignment: Alignment.centerRight,
-                                  decoration: BoxDecoration(
-                                      border: Border(
-                                          bottom:
-                                              BorderSide(color: Colors.black))),
-                                  child: Text(nepaliNumberFormatter(
-                                      data.budgetAmount - data.actualAmount,
-                                      decimalDigits: 2,
-                                      showSign: true)));
+                                  decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.black))),
+                                  child: Text(nepaliNumberFormatter(data.budgetAmount - data.actualAmount, decimalDigits: 2, showSign: true)));
                             default:
                               return Text("");
                           }

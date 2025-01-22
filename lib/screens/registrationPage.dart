@@ -8,14 +8,12 @@ import 'package:byaparlekha/config/routes/routes.dart';
 import 'package:byaparlekha/config/utility/validator.dart';
 import 'package:byaparlekha/database/myDatabase/database.dart';
 import 'package:byaparlekha/models/textModel.dart';
-import 'package:byaparlekha/services/http_service.dart';
 import 'package:byaparlekha/services/sharedPreferenceService.dart';
 import 'package:byaparlekha/services/userService.dart';
 import 'package:drift/drift.dart' hide Column;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:path/path.dart' hide context;
 import 'package:progress_dialog/progress_dialog.dart';
 
@@ -36,8 +34,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
   @override
   void initState() {
     super.initState();
-    HttpService().init(context);
-    // usernameTextEditingController.text = SharedPreferenceService().userName;
   }
 
   @override
@@ -230,7 +226,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   }
 
   registerUser() async {
-    final data = await UserService().registerUser(username: usernameTextEditingController.text, password: passwordTextEditingController.text);
+    await UserService().registerUser(username: usernameTextEditingController.text, password: passwordTextEditingController.text);
     var user = await FirebaseAuth.instance.currentUser;
     await AppDatabase().myDatabase.userDao.insertData(
           UserCompanion(mobileNumber: Value<String>(user!.uid), name: Value<String>(nameController.text), userData: Value<String>(user.refreshToken ?? ""), expiryDate: Value.absent()),

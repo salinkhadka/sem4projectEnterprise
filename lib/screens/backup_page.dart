@@ -1,28 +1,20 @@
+import 'dart:io';
+
+import 'package:archive/archive_io.dart';
 import 'package:byaparlekha/components/adaptive_text.dart';
 import 'package:byaparlekha/config/configuration.dart';
-import 'package:byaparlekha/config/globals.dart';
 import 'package:byaparlekha/config/routes/routes.dart';
 import 'package:byaparlekha/database/myDatabase/database.dart';
 import 'package:byaparlekha/models/textModel.dart';
 import 'package:byaparlekha/providers/preference_provider.dart';
-
-import 'package:progress_dialog/progress_dialog.dart';
-import 'package:permission_handler/permission_handler.dart' as p;
-
-import 'package:byaparlekha/services/http_service.dart';
 import 'package:byaparlekha/services/sharedPreferenceService.dart';
 import 'package:byaparlekha/services/userService.dart';
-
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nepali_utils/nepali_utils.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 
-import 'dart:io';
-
-import 'package:archive/archive_io.dart';
-import 'package:path_provider/path_provider.dart';
 import '../components/extra_componenets.dart';
 
 class BackUpPage extends StatefulWidget {
