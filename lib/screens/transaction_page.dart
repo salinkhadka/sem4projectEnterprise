@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:drift/drift.dart' hide Column;
 import 'package:byaparlekha/components/adaptive_text.dart';
 import 'package:byaparlekha/components/customDropDown.dart';
 import 'package:byaparlekha/components/extra_componenets.dart';
@@ -8,27 +7,23 @@ import 'package:byaparlekha/components/screen_size_config.dart';
 import 'package:byaparlekha/config/utility/validator.dart';
 import 'package:byaparlekha/database/myDatabase/database.dart';
 import 'package:byaparlekha/icons/vector_icons.dart';
-
 import 'package:byaparlekha/models/accountDataModel.dart';
-
 import 'package:byaparlekha/models/textModel.dart';
 import 'package:byaparlekha/models/valueModel.dart';
 import 'package:byaparlekha/providers/preference_provider.dart';
+import 'package:byaparlekha/screens/account_page.dart';
+import 'package:byaparlekha/widget/addPersonDialog.dart';
+import 'package:byaparlekha/widget/addTransactionItemDialog.dart';
+import 'package:drift/drift.dart' hide Column;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:byaparlekha/screens/account_page.dart';
-import 'package:byaparlekha/services/sharedPreferenceService.dart';
-import 'package:byaparlekha/widget/addPersonDialog.dart';
-import 'package:byaparlekha/widget/addTransactionItemDialog.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nepali_date_picker/nepali_date_picker.dart';
-
 import 'package:provider/provider.dart';
 
 import '../config/configuration.dart';
 import '../config/globals.dart';
-
 import '../screens/category_page.dart';
 
 class TransactionPage extends StatefulWidget {

@@ -1,21 +1,18 @@
 import 'dart:io';
+
 import 'package:byaparlekha/components/adaptive_text.dart';
 import 'package:byaparlekha/components/date_selector.dart';
 import 'package:byaparlekha/config/configuration.dart';
 import 'package:byaparlekha/config/globals.dart' as globals;
 import 'package:byaparlekha/database/myDatabase/database.dart';
-import 'package:collection/collection.dart';
 import 'package:byaparlekha/models/exportmodel.dart';
 import 'package:byaparlekha/models/textModel.dart';
 import 'package:byaparlekha/models/transactionItemSummary.dart';
 import 'package:byaparlekha/providers/preference_provider.dart';
-
+import 'package:byaparlekha/services/sharedPreferenceService.dart';
 import 'package:excel/excel.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-import 'package:byaparlekha/services/sharedPreferenceService.dart';
 import 'package:nepali_utils/nepali_utils.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
@@ -33,8 +30,7 @@ class DailyLogReportPage extends StatefulWidget {
   _DailyLogReportPageState createState() => _DailyLogReportPageState();
 }
 
-class _DailyLogReportPageState extends State<DailyLogReportPage>
-    with WidgetsBindingObserver {
+class _DailyLogReportPageState extends State<DailyLogReportPage> with WidgetsBindingObserver {
   // List<ExportDataModel> budgetExportDataModel = [];
   // List<ExportDataModel> transcationExportDataModel = [];
   Map<DateTime, List<TransactionItemSummary>>? dailyLogSumamry = {};
@@ -45,10 +41,8 @@ class _DailyLogReportPageState extends State<DailyLogReportPage>
     super.initState();
   }
 
-  NepaliDateTime fromDate =
-      NepaliDateTime(NepaliDateTime.now().year, NepaliDateTime.now().month);
-  NepaliDateTime toDate =
-      NepaliDateTime(NepaliDateTime.now().year, NepaliDateTime.now().month + 1);
+  NepaliDateTime fromDate = NepaliDateTime(NepaliDateTime.now().year, NepaliDateTime.now().month);
+  NepaliDateTime toDate = NepaliDateTime(NepaliDateTime.now().year, NepaliDateTime.now().month + 1);
   Widget getSearchWidget() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -129,8 +123,7 @@ class _DailyLogReportPageState extends State<DailyLogReportPage>
                   // style: ButtonStyle(backgroundColor: MaterialStateProperty.resolveWith((states) => Configuration().incomeColor)),
                   onPressed: () {
                     if (toDate.difference(fromDate).isNegative) {
-                      showSnackBar(
-                          context, 'End date cannot be behind than From date');
+                      showSnackBar(context, 'End date cannot be behind than From date');
                       return;
                     }
                     getReportData(fromDate, toDate);
@@ -155,17 +148,12 @@ class _DailyLogReportPageState extends State<DailyLogReportPage>
     dailyLogRealData.clear();
   }
 
-  getReportData(NepaliDateTime fromNepaliDateTime,
-      NepaliDateTime toNepaliDateTime) async {
+  getReportData(NepaliDateTime fromNepaliDateTime, NepaliDateTime toNepaliDateTime) async {
     clearVariable();
     setState(() {});
-    final data = await AppDatabase()
-        .myDatabase
-        .transactionItemDao
-        .getTransactionItem(fromNepaliDateTime, toNepaliDateTime);
+    final data = await AppDatabase().myDatabase.transactionItemDao.getTransactionItem(fromNepaliDateTime, toNepaliDateTime);
     dailyLogRealData = data;
-    dailyLogRealData.sort((x, y) =>
-        x.item.name.toLowerCase().compareTo(y.item.name.toLowerCase()));
+    dailyLogRealData.sort((x, y) => x.item.name.toLowerCase().compareTo(y.item.name.toLowerCase()));
     dailyLogSumamry = data.groupBy<DateTime>((p0) => p0.transactionCreatedDate);
     setState(() {});
   }
@@ -189,8 +177,7 @@ class _DailyLogReportPageState extends State<DailyLogReportPage>
         floatingActionButton: (dailyLogSumamry ?? {}).isEmpty
             ? null
             : Material(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                 color: Colors.yellow[800],
                 child: InkWell(
                   borderRadius: BorderRadius.circular(20),
@@ -215,10 +202,7 @@ class _DailyLogReportPageState extends State<DailyLogReportPage>
                         ),
                         AdaptiveText(
                           TextModel('Export Report'),
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white),
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.white),
                         )
                       ],
                     ),
@@ -246,8 +230,7 @@ class _DailyLogReportPageState extends State<DailyLogReportPage>
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
-                        final currentDate =
-                            dailyLogSumamry!.keys.toList()[index];
+                        final currentDate = dailyLogSumamry!.keys.toList()[index];
                         final currentData = dailyLogSumamry![currentDate]!;
                         return ExpansionTile(
                             textColor: Colors.black,
@@ -259,8 +242,7 @@ class _DailyLogReportPageState extends State<DailyLogReportPage>
                                   NepaliDateFormat(
                                     "yyyy MMMM dd",
                                   ).format(currentDate.toNepaliDateTime()),
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 12),
+                                  style: TextStyle(color: Colors.white, fontSize: 12),
                                   textAlign: TextAlign.left,
                                 ),
                               ),
@@ -270,13 +252,7 @@ class _DailyLogReportPageState extends State<DailyLogReportPage>
                               children: [
                                 if (currentData.first.billNumber != null)
                                   AdaptiveText(
-                                    TextModel(
-                                        ('Invoice Number: ' +
-                                            (currentData.first.billNumber ??
-                                                '')),
-                                        nepaliName: ('बिल नम्बर: ' +
-                                            (currentData.first.billNumber ??
-                                                ''))),
+                                    TextModel(('Invoice Number: ' + (currentData.first.billNumber ?? '')), nepaliName: ('बिल नम्बर: ' + (currentData.first.billNumber ?? ''))),
                                     style: TextStyle(
                                       color: Colors.black,
                                     ),
@@ -285,11 +261,7 @@ class _DailyLogReportPageState extends State<DailyLogReportPage>
                                   height: 1,
                                 ),
                                 AdaptiveText(
-                                  TextModel(
-                                      ('Sold To: ' +
-                                          (currentData.first.person.name)),
-                                      nepaliName: ('बेचेको: ' +
-                                          (currentData.first.person.name))),
+                                  TextModel(('Sold To: ' + (currentData.first.person.name)), nepaliName: ('बेचेको: ' + (currentData.first.person.name))),
                                   style: TextStyle(
                                     color: Colors.black,
                                   ),
@@ -302,18 +274,13 @@ class _DailyLogReportPageState extends State<DailyLogReportPage>
                                 // subtitle: AdaptiveText(TextModel(currentTransactionData.person.name)),
                                 title: AdaptiveText(
                                   TextModel(
-                                    currentTransactionData.item.name +
-                                        ' (${nepaliNumberFormatter(currentTransactionData.transactionItem.quantity)})',
+                                    currentTransactionData.item.name + ' (${nepaliNumberFormatter(currentTransactionData.transactionItem.quantity)})',
                                   ),
                                   style: TextStyle(color: Colors.black),
                                 ),
                                 trailing: Text(
-                                  nepaliNumberFormatter(
-                                      currentTransactionData
-                                          .transactionItem.amount,
-                                      decimalDigits: 2),
-                                  style: getTextStyle(
-                                      currentTransactionData.isIncome),
+                                  nepaliNumberFormatter(currentTransactionData.transactionItem.amount, decimalDigits: 2),
+                                  style: getTextStyle(currentTransactionData.isIncome),
                                 ),
                               );
                             }).toList());
@@ -329,10 +296,7 @@ class _DailyLogReportPageState extends State<DailyLogReportPage>
         ));
   }
 
-  TextStyle getTextStyle(bool isIncome) => TextStyle(
-      color:
-          isIncome ? Configuration().incomeColor : Configuration().expenseColor,
-      fontWeight: FontWeight.bold);
+  TextStyle getTextStyle(bool isIncome) => TextStyle(color: isIncome ? Configuration().incomeColor : Configuration().expenseColor, fontWeight: FontWeight.bold);
 
   getRowValue({
     String? svgImageName,
@@ -346,18 +310,14 @@ class _DailyLogReportPageState extends State<DailyLogReportPage>
       child: Row(
         children: [
           // if (svgImageName != null)
-          SvgPicture.asset('assets/images/$svgImageName.svg',
-              width: 18, color: Colors.black),
+          SvgPicture.asset('assets/images/$svgImageName.svg', width: 18, color: Colors.black),
           SizedBox(
             width: 5,
           ),
           Flexible(
             child: AdaptiveText(
               TextModel(value),
-              style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400),
+              style: TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.w400),
             ),
           )
         ],
@@ -367,23 +327,18 @@ class _DailyLogReportPageState extends State<DailyLogReportPage>
 
   _exportDataToExcel() async {
     final ProgressDialog pr = ProgressDialog(context);
-    final isEnglish =
-        Provider.of<PreferenceProvider>(context, listen: false).isEnglish;
+    final isEnglish = Provider.of<PreferenceProvider>(context, listen: false).isEnglish;
     await pr.show();
     try {
       var excel = Excel.createExcel();
       var sheet = excel.getDefaultSheet()!;
       //Contains log data grouped by income/expense
-      final groupedDataByIncomeExpense = dailyLogRealData.groupBy((p0) =>
-          p0.categoryHeadingData.isIncome ? 'Cash Inflow' : 'Cash Outflow');
+      final groupedDataByIncomeExpense = dailyLogRealData.groupBy((p0) => p0.categoryHeadingData.isIncome ? 'Cash Inflow' : 'Cash Outflow');
       //Loop the log data by income OR Expense
       String companyName = SharedPreferenceService().userName;
 
-      for (int categoryHeadingLevelIndex = 0;
-          categoryHeadingLevelIndex < groupedDataByIncomeExpense.keys.length;
-          categoryHeadingLevelIndex++) {
-        final excelSheetTitle =
-            categoryHeadingLevelIndex == 0 ? 'Sales' : 'Purchase';
+      for (int categoryHeadingLevelIndex = 0; categoryHeadingLevelIndex < groupedDataByIncomeExpense.keys.length; categoryHeadingLevelIndex++) {
+        final excelSheetTitle = categoryHeadingLevelIndex == 0 ? 'Sales' : 'Purchase';
         final newSheetName = "Cash $excelSheetTitle Report";
         if (categoryHeadingLevelIndex == 0) {
           excel.rename(sheet, newSheetName);
@@ -393,30 +348,19 @@ class _DailyLogReportPageState extends State<DailyLogReportPage>
         int row = 0, column = 1;
         colorIndex = 0;
         /*-Title-*/
-        excel.updateCell(
-            sheet,
-            CellIndex.indexByColumnRow(columnIndex: column, rowIndex: row),
-            TextCellValue(
-                'Cash $excelSheetTitle Report of $companyName as of ${NepaliDateFormat("yyyy-MM-dd", Language.english).format(toDate)}'),
+        excel.updateCell(sheet, CellIndex.indexByColumnRow(columnIndex: column, rowIndex: row),
+            TextCellValue('Cash $excelSheetTitle Report of $companyName as of ${NepaliDateFormat("yyyy-MM-dd", Language.english).format(toDate)}'),
             cellStyle: headerCellStyle);
         row++;
-        excel.updateCell(
-            sheet,
-            CellIndex.indexByColumnRow(columnIndex: column, rowIndex: row),
-            TextCellValue(
-                'Statement from "${NepaliDateFormat("yyyy-MM-dd", Language.english).format(fromDate)}" to "${NepaliDateFormat("yyyy-MM-dd", Language.english).format(toDate)}"'),
+        excel.updateCell(sheet, CellIndex.indexByColumnRow(columnIndex: column, rowIndex: row),
+            TextCellValue('Statement from "${NepaliDateFormat("yyyy-MM-dd", Language.english).format(fromDate)}" to "${NepaliDateFormat("yyyy-MM-dd", Language.english).format(toDate)}"'),
             cellStyle: headerCellStyle);
         row++;
         final user = await AppDatabase().myDatabase.userDao.getUserData();
-        excel.updateCell(
-            sheet,
-            CellIndex.indexByColumnRow(columnIndex: column, rowIndex: row),
-            TextCellValue('Generated By: ${user.name}'),
-            cellStyle: headerCellStyle);
+        excel.updateCell(sheet, CellIndex.indexByColumnRow(columnIndex: column, rowIndex: row), TextCellValue('Generated By: ${user.name}'), cellStyle: headerCellStyle);
         row += 2;
         //get list of date to be shown in excel
-        List<NepaliDateTime> dataToBeFetchDates = initializeDateResolver(
-            fromDate.year, fromDate.month, toDate.year, toDate.month);
+        List<NepaliDateTime> dataToBeFetchDates = initializeDateResolver(fromDate.year, fromDate.month, toDate.year, toDate.month);
         List<String> headers = [
           'S.N',
           'Cashflow Source Heading',
@@ -430,27 +374,19 @@ class _DailyLogReportPageState extends State<DailyLogReportPage>
         });
         //Printing Headers in excel
         headers.forEach((element) {
-          excel.updateCell(
-              sheet,
-              CellIndex.indexByColumnRow(columnIndex: column, rowIndex: row),
-              TextCellValue(element),
-              cellStyle: headerCellStyle);
+          excel.updateCell(sheet, CellIndex.indexByColumnRow(columnIndex: column, rowIndex: row), TextCellValue(element), cellStyle: headerCellStyle);
           column++;
         });
         row++;
         column = 1;
         //Current key
-        final currentCategoryHeadingKey = groupedDataByIncomeExpense.keys
-            .elementAt(categoryHeadingLevelIndex);
+        final currentCategoryHeadingKey = groupedDataByIncomeExpense.keys.elementAt(categoryHeadingLevelIndex);
 
         ///List of daily sales of [currentCategoryHeadingKey]
-        final List<TransactionItemSummary> rawTransactionItemSummary =
-            groupedDataByIncomeExpense[currentCategoryHeadingKey] ?? [];
+        final List<TransactionItemSummary> rawTransactionItemSummary = groupedDataByIncomeExpense[currentCategoryHeadingKey] ?? [];
         //Grouping the log data by date
-        final categoryHeadingDataGroupedByMonth =
-            rawTransactionItemSummary.groupBy(
-          (p0) => NepaliDateFormat.yM()
-              .format(p0.transactionCreatedDate.toNepaliDateTime()),
+        final categoryHeadingDataGroupedByMonth = rawTransactionItemSummary.groupBy(
+          (p0) => NepaliDateFormat.yM().format(p0.transactionCreatedDate.toNepaliDateTime()),
         );
         excel.updateCell(
           sheet,
@@ -469,68 +405,47 @@ class _DailyLogReportPageState extends State<DailyLogReportPage>
         final fullData = rawTransactionItemSummary.fold(
           {"quantity": 0.0, "amount": 0.0},
           (previousValue, element) => {
-            "quantity": (previousValue['quantity'] ?? 0.0) +
-                element.transactionItem.quantity,
-            "amount": (previousValue['amount'] ?? 0.0) +
-                element.transactionItem.amount,
+            "quantity": (previousValue['quantity'] ?? 0.0) + element.transactionItem.quantity,
+            "amount": (previousValue['amount'] ?? 0.0) + element.transactionItem.amount,
           },
         );
         excel.updateCell(
           sheet,
           CellIndex.indexByColumnRow(columnIndex: column, rowIndex: row),
-          TextCellValue(nepaliNumberFormatter(fullData['quantity'] ?? 0.0,
-              decimalDigits: 2, language: Language.english)),
-          cellStyle: numberHeaderCellStyle.copyWith(
-              backgroundColorHexVal:
-                  ExcelColor.fromInt(excelBackgroundColors(colorIndex))),
+          TextCellValue(nepaliNumberFormatter(fullData['quantity'] ?? 0.0, decimalDigits: 2, language: Language.english)),
+          cellStyle: numberHeaderCellStyle.copyWith(backgroundColorHexVal: ExcelColor.fromInt(excelBackgroundColors(colorIndex))),
         );
         column++;
         excel.updateCell(
           sheet,
           CellIndex.indexByColumnRow(columnIndex: column, rowIndex: row),
-          TextCellValue(nepaliNumberFormatter(fullData['amount'] ?? 0.0,
-              decimalDigits: 2, language: Language.english)),
-          cellStyle: numberHeaderCellStyle.copyWith(
-              backgroundColorHexVal:
-                  ExcelColor.fromInt(excelBackgroundColors(colorIndex))),
+          TextCellValue(nepaliNumberFormatter(fullData['amount'] ?? 0.0, decimalDigits: 2, language: Language.english)),
+          cellStyle: numberHeaderCellStyle.copyWith(backgroundColorHexVal: ExcelColor.fromInt(excelBackgroundColors(colorIndex))),
         );
         column++;
         updateColor();
         {
-          for (int dateIndex = 0;
-              dateIndex < dataToBeFetchDates.length;
-              dateIndex++) {
+          for (int dateIndex = 0; dateIndex < dataToBeFetchDates.length; dateIndex++) {
             final currentDate = dataToBeFetchDates[dateIndex];
-            final data = (categoryHeadingDataGroupedByMonth[
-                        NepaliDateFormat.yM().format(currentDate)] ??
-                    [])
-                .fold(
+            final data = (categoryHeadingDataGroupedByMonth[NepaliDateFormat.yM().format(currentDate)] ?? []).fold(
               {"quantity": 0.0, "amount": 0.0},
               (previousValue, element) => {
-                "quantity": (previousValue['quantity'] ?? 0.0) +
-                    element.transactionItem.quantity,
-                "amount": (previousValue['amount'] ?? 0.0) +
-                    element.transactionItem.amount,
+                "quantity": (previousValue['quantity'] ?? 0.0) + element.transactionItem.quantity,
+                "amount": (previousValue['amount'] ?? 0.0) + element.transactionItem.amount,
               },
             );
             excel.updateCell(
               sheet,
               CellIndex.indexByColumnRow(columnIndex: column, rowIndex: row),
-              TextCellValue(nepaliNumberFormatter(data['quantity'] ?? 0.0,
-                  decimalDigits: 2, language: Language.english)),
-              cellStyle: numberHeaderCellStyle.copyWith(
-                  backgroundColorHexVal:
-                      ExcelColor.fromInt(excelBackgroundColors(colorIndex))),
+              TextCellValue(nepaliNumberFormatter(data['quantity'] ?? 0.0, decimalDigits: 2, language: Language.english)),
+              cellStyle: numberHeaderCellStyle.copyWith(backgroundColorHexVal: ExcelColor.fromInt(excelBackgroundColors(colorIndex))),
             );
             column++;
             excel.updateCell(
               sheet,
               CellIndex.indexByColumnRow(columnIndex: column, rowIndex: row),
-              TextCellValue(nepaliNumberFormatter(data['amount'] ?? 0.0,
-                  decimalDigits: 2, language: Language.english)),
-              cellStyle: numberHeaderCellStyle.copyWith(
-                  backgroundColorHexVal:
-                      ExcelColor.fromInt(excelBackgroundColors(colorIndex))),
+              TextCellValue(nepaliNumberFormatter(data['amount'] ?? 0.0, decimalDigits: 2, language: Language.english)),
+              cellStyle: numberHeaderCellStyle.copyWith(backgroundColorHexVal: ExcelColor.fromInt(excelBackgroundColors(colorIndex))),
             );
             column++;
             updateColor();
@@ -540,26 +455,18 @@ class _DailyLogReportPageState extends State<DailyLogReportPage>
         row++;
         column = 1;
         //Grouping the current Month data by items
-        final Map<int, List<TransactionItemSummary>> groupedDataByItem =
-            rawTransactionItemSummary.groupBy((p0) => p0.item.id);
-        for (int currentItemGroupedIndex = 0;
-            currentItemGroupedIndex < groupedDataByItem.keys.length;
-            currentItemGroupedIndex++) {
-          final currentItemTransactionSummaryKey =
-              groupedDataByItem.keys.elementAt(currentItemGroupedIndex);
-          final currentItemTransactionSummary =
-              groupedDataByItem[currentItemTransactionSummaryKey] ?? [];
+        final Map<int, List<TransactionItemSummary>> groupedDataByItem = rawTransactionItemSummary.groupBy((p0) => p0.item.id);
+        for (int currentItemGroupedIndex = 0; currentItemGroupedIndex < groupedDataByItem.keys.length; currentItemGroupedIndex++) {
+          final currentItemTransactionSummaryKey = groupedDataByItem.keys.elementAt(currentItemGroupedIndex);
+          final currentItemTransactionSummary = groupedDataByItem[currentItemTransactionSummaryKey] ?? [];
           final groupedItemDataByDate = currentItemTransactionSummary.groupBy(
-            (p0) => NepaliDateFormat.yM()
-                .format(p0.transactionCreatedDate.toNepaliDateTime()),
+            (p0) => NepaliDateFormat.yM().format(p0.transactionCreatedDate.toNepaliDateTime()),
           );
           //
           excel.updateCell(
             sheet,
             CellIndex.indexByColumnRow(columnIndex: column, rowIndex: row),
-            TextCellValue((categoryHeadingLevelIndex + 1).toString() +
-                '.' +
-                (currentItemGroupedIndex + 1).toString()),
+            TextCellValue((categoryHeadingLevelIndex + 1).toString() + '.' + (currentItemGroupedIndex + 1).toString()),
             cellStyle: numberCellStyle,
           );
           column++;
@@ -573,71 +480,46 @@ class _DailyLogReportPageState extends State<DailyLogReportPage>
           final transactionSummary = currentItemTransactionSummary.fold(
             {"quantity": 0.0, "amount": 0.0},
             (previousValue, element) => {
-              "quantity": (previousValue['quantity'] ?? 0.0) +
-                  element.transactionItem.quantity,
-              "amount": (previousValue['amount'] ?? 0.0) +
-                  element.transactionItem.amount,
+              "quantity": (previousValue['quantity'] ?? 0.0) + element.transactionItem.quantity,
+              "amount": (previousValue['amount'] ?? 0.0) + element.transactionItem.amount,
             },
           );
           excel.updateCell(
             sheet,
             CellIndex.indexByColumnRow(columnIndex: column, rowIndex: row),
-            TextCellValue(nepaliNumberFormatter(
-                transactionSummary['quantity'] ?? 0.0,
-                decimalDigits: 2,
-                language: Language.english)),
-            cellStyle: numberCellStyle.copyWith(
-                backgroundColorHexVal:
-                    ExcelColor.fromInt(excelBackgroundColors(colorIndex))),
+            TextCellValue(nepaliNumberFormatter(transactionSummary['quantity'] ?? 0.0, decimalDigits: 2, language: Language.english)),
+            cellStyle: numberCellStyle.copyWith(backgroundColorHexVal: ExcelColor.fromInt(excelBackgroundColors(colorIndex))),
           );
           column++;
           excel.updateCell(
             sheet,
             CellIndex.indexByColumnRow(columnIndex: column, rowIndex: row),
-            TextCellValue(nepaliNumberFormatter(
-                transactionSummary['amount'] ?? 0.0,
-                decimalDigits: 2,
-                language: Language.english)),
-            cellStyle: numberCellStyle.copyWith(
-                backgroundColorHexVal:
-                    ExcelColor.fromInt(excelBackgroundColors(colorIndex))),
+            TextCellValue(nepaliNumberFormatter(transactionSummary['amount'] ?? 0.0, decimalDigits: 2, language: Language.english)),
+            cellStyle: numberCellStyle.copyWith(backgroundColorHexVal: ExcelColor.fromInt(excelBackgroundColors(colorIndex))),
           );
           column++;
           updateColor();
-          for (int dateIndex = 0;
-              dateIndex < dataToBeFetchDates.length;
-              dateIndex++) {
+          for (int dateIndex = 0; dateIndex < dataToBeFetchDates.length; dateIndex++) {
             final currentDate = dataToBeFetchDates[dateIndex];
-            final data = (groupedItemDataByDate[
-                        NepaliDateFormat.yM().format(currentDate)] ??
-                    [])
-                .fold(
+            final data = (groupedItemDataByDate[NepaliDateFormat.yM().format(currentDate)] ?? []).fold(
               {"quantity": 0.0, "amount": 0.0},
               (previousValue, element) => {
-                "quantity": (previousValue['quantity'] ?? 0.0) +
-                    element.transactionItem.quantity,
-                "amount": (previousValue['amount'] ?? 0.0) +
-                    element.transactionItem.amount,
+                "quantity": (previousValue['quantity'] ?? 0.0) + element.transactionItem.quantity,
+                "amount": (previousValue['amount'] ?? 0.0) + element.transactionItem.amount,
               },
             );
             excel.updateCell(
               sheet,
               CellIndex.indexByColumnRow(columnIndex: column, rowIndex: row),
-              TextCellValue(nepaliNumberFormatter(data['quantity'] ?? 0.0,
-                  decimalDigits: 2, language: Language.english)),
-              cellStyle: numberCellStyle.copyWith(
-                  backgroundColorHexVal:
-                      ExcelColor.fromInt(excelBackgroundColors(colorIndex))),
+              TextCellValue(nepaliNumberFormatter(data['quantity'] ?? 0.0, decimalDigits: 2, language: Language.english)),
+              cellStyle: numberCellStyle.copyWith(backgroundColorHexVal: ExcelColor.fromInt(excelBackgroundColors(colorIndex))),
             );
             column++;
             excel.updateCell(
               sheet,
               CellIndex.indexByColumnRow(columnIndex: column, rowIndex: row),
-              TextCellValue(nepaliNumberFormatter(data['amount'] ?? 0.0,
-                  decimalDigits: 2, language: Language.english)),
-              cellStyle: numberCellStyle.copyWith(
-                  backgroundColorHexVal:
-                      ExcelColor.fromInt(excelBackgroundColors(colorIndex))),
+              TextCellValue(nepaliNumberFormatter(data['amount'] ?? 0.0, decimalDigits: 2, language: Language.english)),
+              cellStyle: numberCellStyle.copyWith(backgroundColorHexVal: ExcelColor.fromInt(excelBackgroundColors(colorIndex))),
             );
             column++;
             updateColor();
@@ -651,17 +533,11 @@ class _DailyLogReportPageState extends State<DailyLogReportPage>
       if (value == null) {
         throw ('Error Generating Excel, Please try again');
       }
-      Directory directory = (await (getExternalStorageDirectories(
-              type: StorageDirectory.downloads)))!
-          .first;
-      String finalPath = directory.path +
-          "/DailyReport/" +
-          "DailyLogReport-${DateTime.now().toIso8601String()}.xlsx";
+      Directory directory = (await (getExternalStorageDirectories(type: StorageDirectory.downloads)))!.first;
+      String finalPath = directory.path + "/DailyReport/" + "DailyLogReport-${DateTime.now().toIso8601String()}.xlsx";
       await (File(finalPath)..createSync(recursive: true)).writeAsBytes(value);
       await pr.hide();
-      showSuccessToast(isEnglish
-          ? 'Report had been generated and saved in download folder of app'
-          : 'रिपोर्ट एपको डाउनलोड फोल्डरमा राखिएको छ');
+      showSuccessToast(isEnglish ? 'Report had been generated and saved in download folder of app' : 'रिपोर्ट एपको डाउनलोड फोल्डरमा राखिएको छ');
       await OpenFilex.open(finalPath);
     } catch (e) {
       await pr.hide();
@@ -674,8 +550,7 @@ class _DailyLogReportPageState extends State<DailyLogReportPage>
     colorIndex = colorIndex == 0 ? 1 : 0;
   }
 
-  List<NepaliDateTime> initializeDateResolver(
-      int fromyear, int frommonth, int toyear, int tomonth) {
+  List<NepaliDateTime> initializeDateResolver(int fromyear, int frommonth, int toyear, int tomonth) {
     List<NepaliDateTime> _dateResolver = [];
     int noOfMonths = ((((toyear - fromyear) * 12) + tomonth) - frommonth);
     int initYear = fromyear;
@@ -689,6 +564,5 @@ class _DailyLogReportPageState extends State<DailyLogReportPage>
     return _dateResolver;
   }
 
-  int excelBackgroundColors(int index) =>
-      [Color(0xff9fc4e9), Color(0xffcfe2f3)][index % 2].value;
+  int excelBackgroundColors(int index) => [Color(0xff9fc4e9), Color(0xffcfe2f3)][index % 2].value;
 }
